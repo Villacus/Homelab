@@ -1,0 +1,23 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
+      - HOMEPAGE_VAR_PORTAINER_KEY=${HOMEPAGE_VAR_PORTAINER_KEY}
+      - HOMEPAGE_VAR_IMMICH_KEY=${HOMEPAGE_VAR_IMMICH_KEY}
+      - HOMEPAGE_VAR_TAILSCALE_KEY=${HOMEPAGE_VAR_TAILSCALE_KEY}
+      - HOMEPAGE_VAR_PIHOLE_KEY=${HOMEPAGE_VAR_PIHOLE_KEY}
+    volumes:
+      - ${HOMEPAGE_DATA_PATH}:/app/config
+      - ${DOCKER_SOCKET}:/var/run/docker.sock:ro
+      - ${NAS_PATH}:/mnt/nasdisk:ro
+      - ${HOMEPAGE_DATA_PATH}/.env:/app/custom.env
+    ports:
+      - ${APP_PORT}:3000
+    restart: unless-stopped
