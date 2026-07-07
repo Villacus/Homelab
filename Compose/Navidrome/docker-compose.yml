@@ -1,0 +1,20 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    environment:
+      - TZ=${TZ}
+      - NMUSICFOLDER=/music
+      - DATAFOLDER=/data
+    ports:
+      - "${NAVIDROME_PORT}:4533"
+    volumes:
+      - ${NAVIDROME_DATA_PATH}:/data
+      - ${NAVIDROME_MUSIC_PATH}:/music:ro
+    user: ${NAVIDROME_UID}:${NAVIDROME_GID}
+    restart: unless-stopped

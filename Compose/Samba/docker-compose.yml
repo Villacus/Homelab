@@ -1,0 +1,34 @@
+services:
+  samba:
+    image: dperson/samba
+    container_name: samba
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139/tcp"
+      - "445:445/tcp"
+    volumes:
+      - ${NAS_PATH}/privada:/mnt/privada
+      - ${NAS_PATH}/compartida:/mnt/compartida
+    command:
+      - "-u"
+      - "${SAMBA_USER1};${SAMBA_PASS1};${SAMBA_UID};users"
+      - "-u"
+      - "${SAMBA_USER2};${SAMBA_PASS2}"
+      - "-s"
+      - "Privada;/mnt/privada;yes;no;no;${SAMBA_USER1}"
+      - "-s"
+      - "Compartida;/mnt/compartida;yes;no;no;${SAMBA_USER2}"
+      - "-p"
+      - "-n"
+    environment:
+      - TZ=${TZ}
+      - WORKGROUP=${WORKGROUP}

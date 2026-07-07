@@ -1,0 +1,18 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    restart: unless-stopped
+    volumes:
+      - ./vw-data:/data
+    environment:
+      - DOMAIN=https://vaultwarden.${TS_TAILNET}.ts.net
+      - SIGNUPS_ALLOWED=true
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+    ports:
+      - ${VAULWARDEN_PORT}:80

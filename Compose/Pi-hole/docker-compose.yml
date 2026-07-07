@@ -1,0 +1,37 @@
+services:
+  unbound:
+    container_name: unbound
+    image: klutchell/unbound:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    volumes:
+      - ${UNBOUND_PATH}/config:/etc/unbound/
+    ports:
+      - "5353:53/udp"
+      - "5353:53/tcp"
+    restart: unless-stopped
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    network_mode: host
+    environment:
+      TZ: ${TZ}
+      FTLCONF_webserver_api_password: ${PIHOLE_API_PASSWORD}
+    volumes:
+      - ${PIHOLE_PATH}:/etc/pihole
+    cap_add:
+      - NET_ADMIN
+      - SYS_TIME
+      - SYS_NICE
+    depends_on:
+      - unbound
+    restart: unless-stopped

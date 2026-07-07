@@ -1,0 +1,12 @@
+services:
+  speedtest:
+    image: openspeedtest/latest
+    container_name: speedtest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+    ports:
+      - ${SPEEDTEST_PORT}:3000
+    restart: unless-stopped
