@@ -20,8 +20,8 @@ services:
     ports:
       - ${HOMEPAGE_PORT}:3000
     restart: unless-stopped
-  networks:
-    - homelab_net
+    networks:
+      - homelab_net
 
   wud:
   image: fmartinou/whats-up-docker
