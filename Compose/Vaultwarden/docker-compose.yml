@@ -9,7 +9,7 @@ services:
           memory: 256M
     restart: unless-stopped
     volumes:
-      - ./vw-data:/data
+      - ${VAULTWARDEN_PATH}:/data
     environment:
       - DOMAIN=https://vaultwarden.tailf45616.ts.net
       - SIGNUPS_ALLOWED=true
