@@ -14,4 +14,4 @@ services:
       - DOMAIN=https://vaultwarden.tailf45616.ts.net
       - SIGNUPS_ALLOWED=true
     ports:
-      - ${VAULWARDEN_PORT}:80
+      - ${VAULTWARDEN_PORT}:80
