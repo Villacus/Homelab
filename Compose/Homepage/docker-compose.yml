@@ -17,7 +17,26 @@ services:
       - ${HOMEPAGE_DATA_PATH}:/app/config
       - ${DOCKER_SOCKET}:/var/run/docker.sock:ro
       - ${NAS_PATH}:/mnt/nasdisk:ro
-      - ${HOMEPAGE_DATA_PATH}/.env:/app/custom.env
     ports:
-      - ${APP_PORT}:3000
+      - ${HOMEPAGE_PORT}:3000
     restart: unless-stopped
+  networks:
+    - homelab_net
+
+  wud:
+  image: fmartinou/whats-up-docker
+  container_name: wud
+  volumes:
+    - ${DOCKER_SOCKET}:/var/run/docker.sock:ro # Permite a WUD ver qué imágenes usas
+  environment:
+    - TZ=${TZ}
+    - WUD_WATCHER_DOCKER_LOCAL_HOST=unix://${DOCKER_SOCKET}
+  ports:
+    - ${WUD_PORT}:3000" # Puerto para acceder a la interfaz de WUD si lo necesitas
+  restart: unless-stopped
+  networks:
+    - homelab_net
+
+networks:
+  homelab_net:
+    bridge: true
