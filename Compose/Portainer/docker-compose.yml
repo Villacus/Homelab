@@ -1,0 +1,18 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:sts
+    restart: no
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/villacus/Homelab/Compose/Portainer/portainer_data:/data
+    ports:
+      - 9000:9000
+
+volumes:
+  portainer_data:
+    name: portainer_data
+
+networks:
+  default:
+    name: portainer_network
