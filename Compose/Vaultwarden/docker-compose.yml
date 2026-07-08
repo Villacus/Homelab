@@ -11,8 +11,7 @@ services:
     volumes:
       - ./vw-data:/data
     environment:
-      - DOMAIN=https://vaultwarden.${TS_TAILNET}.ts.net
+      - DOMAIN=https://vaultwarden.tailf45616.ts.net
       - SIGNUPS_ALLOWED=true
-      - ADMIN_TOKEN=${ADMIN_TOKEN}
     ports:
       - ${VAULWARDEN_PORT}:80
