@@ -9,6 +9,7 @@ services:
       - "${GLANCE_PORT}:8080"
 
     volumes:
+      - ${DOCKER_SOCKET}:/var/run/docker.sock:ro
       - ${CONFIG_PATH}:/app/config
       - ${LOCALTIME}:/etc/localtime:ro
 
