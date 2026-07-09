@@ -20,23 +20,3 @@ services:
     ports:
       - ${HOMEPAGE_PORT}:3000
     restart: unless-stopped
-    networks:
-      - homelab_net
-
-  wud:
-    image: fmartinou/whats-up-docker
-    container_name: wud
-    volumes:
-      - ${DOCKER_SOCKET}:/var/run/docker.sock:ro
-    environment:
-      - TZ=${TZ}
-      - WUD_WATCHER_LOCAL_SOCKET=${DOCKER_SOCKET}    
-    ports:
-      - ${WUD_PORT}:3000
-    restart: unless-stopped
-    networks:
-      - homelab_net
-
-networks:
-  homelab_net:
-    driver: bridge
