@@ -15,8 +15,7 @@ services:
       - caddy_data:/data
     depends_on:
       - asknavidrome
-    networks:
-      default:
+      - navidrome
 
   asknavidrome:
     image: ghcr.io/rosskouk/asknavidrome:latest
@@ -42,12 +41,25 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    networks:
-      default:
+
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    ports:
+      - "${NAVIDROME_PORT}:4533"
+    environment:
+      - TZ=${TZ}
+      - NMUSICFOLDER=/music
+      - DATAFOLDER=/data
+    volumes:
+      - ${NAVIDROME_DATA_PATH}:/data
+      - ${NAVIDROME_MUSIC_PATH}:/music:ro
 
 volumes:
   caddy_data:
-
-networks:
-  default:
-    name: asknavidrome_network
