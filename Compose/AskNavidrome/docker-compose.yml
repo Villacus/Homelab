@@ -1,0 +1,27 @@
+services:
+  asknavidrome:
+    image: ghcr.io/rosskouk/asknavidrome:latest
+    container_name: asknavidrome
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    environment:
+      - NAVI_SKILL_ID=${NAVI_SKILL_ID}
+      - NAVI_URL=${NAVI_URL}
+      - NAVI_USER=${NAVI_USER}
+      - NAVI_PASS=${NAVI_PASS}
+      - NAVI_SONG_COUNT=${NAVI_SONG_COUNT}
+      - NAVI_PORT=${NAVI_PORT}
+      - NAVI_API_PATH=${NAVI_API_PATH}
+      - NAVI_API_VER=${NAVI_API_VER}
+      - NAVI_DEBUG=${NAVI_DEBUG}
+    ports:
+      - "${ASKNAVIDROME_PORT}:5000"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
