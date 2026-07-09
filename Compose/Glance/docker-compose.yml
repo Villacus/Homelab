@@ -2,12 +2,9 @@ services:
   glance:
     image: glanceapp/glance:latest
     container_name: glance
-
     restart: unless-stopped
-
     ports:
       - "${GLANCE_PORT}:8080"
-
     volumes:
       - ${DOCKER_SOCKET}:/var/run/docker.sock:ro
       - ${CONFIG_PATH}:/app/config
