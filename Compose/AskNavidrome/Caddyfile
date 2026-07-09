@@ -1,0 +1,11 @@
+:80 {
+    # Subsonic API / streaming → Navidrome
+    handle /rest/* {
+        reverse_proxy ${NAVIDROME_HOST}:${NAVIDROME_PORT}
+    }
+
+    # Everything else → AskNavidrome (Alexa skill endpoint)
+    handle {
+        reverse_proxy asknavidrome:5000
+    }
+}
