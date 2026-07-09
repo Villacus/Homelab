@@ -9,6 +9,8 @@ services:
       - ${DOCKER_SOCKET}:/var/run/docker.sock:ro
       - ${CONFIG_PATH}:/app/config
       - ${LOCALTIME}:/etc/localtime:ro
+      - ${NAS_PATH}:/mnt/nasdisk:ro
 
     environment:
       TZ: ${TZ}
+      PIHOLE_PASSWORD: ${PIHOLE_PASSWORD}
