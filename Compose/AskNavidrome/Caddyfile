@@ -1,0 +1,9 @@
+:80 {
+    handle /rest/* {
+        reverse_proxy navidrome:4533
+    }
+
+    handle {
+        reverse_proxy asknavidrome:5000
+    }
+}
