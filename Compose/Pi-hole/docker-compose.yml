@@ -10,8 +10,8 @@ services:
     volumes:
       - ${UNBOUND_PATH}/config:/etc/unbound/
     ports:
-      - "5353:53/udp"
-      - "5353:53/tcp"
+      - "5335:53/udp"
+      - "5335:53/tcp"
     restart: unless-stopped
 
   pihole:
