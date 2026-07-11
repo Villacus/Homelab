@@ -13,7 +13,7 @@ services:
     ports:
       - "5335:53/udp"
       - "5335:53/tcp"
-    restart: unless-stopped
+    restart: always
 
   pihole:
     container_name: pihole
@@ -36,4 +36,4 @@ services:
       - SYS_NICE
     depends_on:
       - unbound
-    restart: unless-stopped
+    restart: always
