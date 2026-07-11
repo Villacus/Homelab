@@ -1,0 +1,121 @@
+name: jellyfin-arr
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+    environment:
+      - TZ=${TZ}
+    ports:
+      - '${JELLYFIN_PORT}:8096'
+    volumes:
+      - ${JELLYFIN_CONFIG}:/config
+      - ${JELLYFIN_CACHE}:/cache
+      - ${ANIME_LIBRARY}:/media/anime:ro
+      - ${LOCALTIME}:/etc/localtime:ro
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - '${SONARR_PORT}:8989'
+    volumes:
+      - ${SONARR_CONFIG}:/config
+      - ${ANIME_LIBRARY}:/tv
+      - ${DOWNLOAD_DIR}:/downloads
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - '${RADARR_PORT}:7878'
+    volumes:
+      - ${RADARR_CONFIG}:/config
+      - ${ANIME_LIBRARY}:/movies
+      - ${DOWNLOAD_DIR}:/downloads
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - '${PROWLARR_PORT}:9696'
+    volumes:
+      - ${PROWLARR_CONFIG}:/config
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${QBIT_PORT}
+    ports:
+      - '${QBIT_PORT}:${QBIT_PORT}'
+      - '${QBIT_PORT_TLS}:443'
+      - '${QBIT_PORT_DHT}:6881'
+      - '${QBIT_PORT_DHT}:6881/udp'
+    volumes:
+      - ${QBIT_CONFIG}:/config
+      - ${DOWNLOAD_DIR}:/downloads
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - '${BAZARR_PORT}:6767'
+    volumes:
+      - ${BAZARR_CONFIG}:/config
+      - ${ANIME_LIBRARY}:/tv
+    restart: unless-stopped
