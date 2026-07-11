@@ -1,0 +1,8 @@
+tailscale serve --bg --https 443 --service=svc:homepage 127.0.0.1:8082
+tailscale serve --bg --https 443 --service=svc:komodo 127.0.0.1:9120
+tailscale serve --bg --https 443 --service=svc:speedtest 127.0.0.1:3002
+tailscale serve --bg --https 443 --service=svc:pihole 127.0.0.1:80
+tailscale serve --bg --https 443 --service=svc:immich 127.0.0.1:2283
+tailscale serve --bg --https 443 --service=svc:nextcloud 127.0.0.1:8081
+tailscale serve --bg --https 443 --service=svc:navidrome 127.0.0.1:4533
+tailscale serve --bg --https 443 --service=svc:vaultwarden 127.0.0.1:8080
