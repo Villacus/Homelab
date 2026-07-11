@@ -11,6 +11,7 @@ services:
       - POSTGRES_DB=${NC_DB_NAME}
       - POSTGRES_USER=${NC_DB_USER}
       - POSTGRES_PASSWORD=${NC_DB_PASSWORD}
+    stop_grace_period: 30s
     volumes:
       - ${NEXTCLOUD_PATH}/db:/var/lib/postgresql/data
     restart: always

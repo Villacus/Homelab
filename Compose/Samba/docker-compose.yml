@@ -15,6 +15,7 @@ services:
       - "138:138/udp"
       - "139:139/tcp"
       - "445:445/tcp"
+    stop_grace_period: 30s
     volumes:
       - ${NAS_PATH}/privada:/mnt/privada
       - ${NAS_PATH}/compartida:/mnt/compartida

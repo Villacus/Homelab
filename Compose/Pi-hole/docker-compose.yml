@@ -9,6 +9,7 @@ services:
           memory: 128M
     volumes:
       - ${UNBOUND_PATH}/config:/etc/unbound/
+    stop_grace_period: 30s
     ports:
       - "5335:53/udp"
       - "5335:53/tcp"
@@ -28,6 +29,7 @@ services:
       FTLCONF_webserver_api_password: ${PIHOLE_API_PASSWORD}
     volumes:
       - ${PIHOLE_PATH}:/etc/pihole
+    stop_grace_period: 30s
     cap_add:
       - NET_ADMIN
       - SYS_TIME

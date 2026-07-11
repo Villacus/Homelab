@@ -13,6 +13,7 @@ services:
       - DATAFOLDER=/data
     ports:
       - "${NAVIDROME_PORT}:4533"
+    stop_grace_period: 30s
     volumes:
       - ${NAVIDROME_DATA_PATH}:/data
       - ${NAVIDROME_MUSIC_PATH}:/music:ro

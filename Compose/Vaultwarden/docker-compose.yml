@@ -8,6 +8,7 @@ services:
           cpus: '0.5'
           memory: 256M
     restart: unless-stopped
+    stop_grace_period: 30s
     volumes:
       - ${VAULTWARDEN_PATH}:/data
     environment:
