@@ -18,6 +18,8 @@ services:
       - ${JELLYFIN_CACHE}:/cache
       - ${ANIME_LIBRARY}:/media/anime:ro
       - ${LOCALTIME}:/etc/localtime:ro
+    networks:
+      - arrnet
     restart: unless-stopped
 
   sonarr:
@@ -38,6 +40,8 @@ services:
       - ${SONARR_CONFIG}:/config
       - ${ANIME_LIBRARY}:/tv
       - ${DOWNLOAD_DIR}:/downloads
+    networks:
+      - arrnet
     restart: unless-stopped
 
   radarr:
@@ -58,6 +62,8 @@ services:
       - ${RADARR_CONFIG}:/config
       - ${ANIME_LIBRARY}:/movies
       - ${DOWNLOAD_DIR}:/downloads
+    networks:
+      - arrnet
     restart: unless-stopped
 
   prowlarr:
@@ -76,6 +82,8 @@ services:
       - '${PROWLARR_PORT}:9696'
     volumes:
       - ${PROWLARR_CONFIG}:/config
+    networks:
+      - arrnet
     restart: unless-stopped
 
   qbittorrent:
@@ -99,6 +107,8 @@ services:
     volumes:
       - ${QBIT_CONFIG}:/config
       - ${DOWNLOAD_DIR}:/downloads
+    networks:
+      - arrnet
     restart: unless-stopped
 
   bazarr:
@@ -118,4 +128,10 @@ services:
     volumes:
       - ${BAZARR_CONFIG}:/config
       - ${ANIME_LIBRARY}:/tv
+    networks:
+      - arrnet
     restart: unless-stopped
+
+networks:
+  arrnet:
+    driver: bridge
