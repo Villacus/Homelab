@@ -132,6 +132,28 @@ services:
       - arrnet
     restart: unless-stopped
 
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - '${LIDARR_PORT}:8686'
+    volumes:
+      - ${LIDARR_CONFIG}:/config
+      - ${MUSIC_LIBRARY}:/music
+      - ${DOWNLOAD_DIR}:/downloads
+    networks:
+      - arrnet
+    restart: unless-stopped
+
 networks:
   arrnet:
     driver: bridge
