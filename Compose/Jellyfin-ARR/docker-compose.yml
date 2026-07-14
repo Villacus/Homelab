@@ -130,6 +130,48 @@ services:
       - arrnet
     restart: unless-stopped
 
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - '${LIDARR_PORT}:8686'
+    volumes:
+      - ${LIDARR_CONFIG}:/config
+      - ${MEDIA_ROOT}:/media
+    networks:
+      - arrnet
+    restart: unless-stopped
+
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    ports:
+      - '${READARR_PORT}:8787'
+    volumes:
+      - ${READARR_CONFIG}:/config
+      - ${MEDIA_ROOT}:/media
+    networks:
+      - arrnet
+    restart: unless-stopped
+
 networks:
   arrnet:
     driver: bridge
