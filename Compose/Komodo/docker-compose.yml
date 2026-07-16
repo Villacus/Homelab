@@ -1,0 +1,44 @@
+services:
+  komodo-db:
+    image: ghcr.io/ferretdb/ferretdb:1
+    container_name: komodo-db
+    restart: unless-stopped
+    user: "0:0"
+    volumes:
+      - ${KOMODO_PATH}/komodo_data:/data
+    environment:
+      - FERRETDB_HANDLER=sqlite
+      - FERRETDB_SQLITE_URL=file:/data/
+
+  komodo-core:
+    image: ghcr.io/moghtech/komodo-core:latest
+    container_name: komodo-core
+    restart: unless-stopped
+    init: true
+    ports:
+      - ${KOMODO_PORT}:9120
+    depends_on:
+      - komodo-db
+    volumes:
+      - ${DOCKER_SOCKET}:/var/run/docker.sock
+      - ${KOMODO_PATH}:/config
+    environment:
+      - TZ=${TZ}
+      - KOMODO_DATABASE_ADDRESS=komodo-db
+      - KOMODO_LOCAL_AUTH=true
+      - KOMODO_ENABLE_NEW_USERS=true
+      - KOMODO_JWT_SECRET=${KOMODO_JWT_SECRET}
+      - KOMODO_HOST=https://komodo.tailf45616.ts.net
+      
+  komodo-periphery:
+    image: ghcr.io/moghtech/komodo-periphery:latest
+    container_name: komodo-periphery
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - KOMODO_STACK_DIR=/configs/stacks
+    ports:
+      - "${PERIPHERY_PORT}:8120"
+    volumes:
+      - ${DOCKER_SOCKET}:/var/run/docker.sock
+      - ${KOMODO_PATH}/stacks:/configs/app/stacks
