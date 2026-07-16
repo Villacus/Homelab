@@ -1,0 +1,37 @@
+name: paperless-ngx
+
+services:
+  broker:
+    image: docker.io/library/redis:8
+    container_name: paperless-redis
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      - paperless
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless
+    restart: unless-stopped
+    depends_on:
+      - broker
+    ports:
+      - '${PAPERLESS_PORT}:8000'
+    volumes:
+      - ${PAPERLESS_CONFIG}:/usr/src/paperless/data
+      - ${PAPERLESS_MEDIA}:/usr/src/paperless/media
+      - ${PAPERLESS_EXPORT}:/usr/src/paperless/export
+      - ${PAPERLESS_CONSUME}:/usr/src/paperless/consume
+    environment:
+      - PAPERLESS_REDIS=redis://broker:6379
+      - PAPERLESS_DBENGINE=sqlite
+    networks:
+      - paperless
+
+volumes:
+  redisdata:
+
+networks:
+  paperless:
+    driver: bridge
