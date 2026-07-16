@@ -141,5 +141,11 @@ Script de serve: `/home/villacus/tailscale`
 2. Crear carpetas de config en la Pi: `ssh pilla "mkdir -p /home/villacus/<service>/config"`
 3. Git push: `git add . && git commit -m "feat: ..." && git push`
 4. Desplegar en Komodo
-5. Registrar en Tailscale si aplica
+5. Registrar en Tailscale si aplica:
+   - Añadir línea al script `/home/villacus/tailscale`:
+     ```bash
+     sudo tailscale serve --bg --https 443 --service=svc:<nombre> 127.0.0.1:<puerto>
+     ```
+   - Ejecutar el comando en la Pi
+   - Aprobar en Tailscale Admin
 6. Actualizar Glance si es un servicio nuevo
