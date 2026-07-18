@@ -94,7 +94,7 @@ deploy:
 | Heaviest | 2.0 | 2G | Jellyfin |
 
 ### Redes
-- Por defecto: bridge default (sin `networks:` explícito)
+- Por defecto: Defffault Projetc Bridge
 - Stacks complejos: bridge custom (`arrnet`, `paperless`)
 - Pi-hole: `network_mode: host`
 
