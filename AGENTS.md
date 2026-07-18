@@ -48,11 +48,13 @@ SERVICE_PORT=XXXX
 |--------|----------|
 | 80 | Pi-hole |
 | 3000 | Homepage |
+| 3001 | Uptime Kuma |
 | 3002 | Speedtest |
 | 4533 | Navidrome |
 | 5335 | Unbound |
 | 6767 | Bazarr |
 | 6881 | qBittorrent (DHT) |
+| 7000 | Komodo Discord Alerter |
 | 7878 | Radarr |
 | 8000 | Paperless-ngx |
 | 8080 | Vaultwarden |
@@ -60,11 +62,13 @@ SERVICE_PORT=XXXX
 | 8082 | Glance |
 | 8085 | qBittorrent (WebUI) |
 | 8096 | Jellyfin |
+| 8120 | Komodo Periphery |
 | 8443 | qBittorrent (TLS) |
 | 8686 | Lidarr |
 | 8787 | Readarr |
 | 8989 | Sonarr |
 | 9000 | Portainer |
+| 9120 | Komodo Core |
 | 9696 | Prowlarr |
 | 2283 | Immich |
 
@@ -85,7 +89,7 @@ deploy:
 | Tier | CPU | Memoria | Servicios |
 |------|-----|---------|-----------|
 | Light | 0.25 | 128M | Redis, Unbound, Speedtest, Prowlarr, Bazarr |
-| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden |
+| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless-ngx |
 | Heavy | 1.0 | 512M-1G | Nextcloud, Immich Server |
 | Heaviest | 2.0 | 2G | Jellyfin |
 
@@ -132,9 +136,71 @@ https://immich.tailf45616.ts.net
 https://pihole.tailf45616.ts.net
 https://glance.tailf45616.ts.net
 https://komodo.tailf45616.ts.net
+https://paperless.tailf45616.ts.net
 ```
 
 Script de serve: `/home/villacus/tailscale`
+
+## Discord - Alerting
+
+### Estructura de canales
+```
+📋 INFORMACIÓN
+├── #reglas
+├── #anuncios
+└── #status              ← Uptime Kuma + alertas de servidor
+
+🏗️ HOMELAB
+├── #deploys             ← GitHub webhook + Komodo deploys
+├── #logs
+└── #backups
+
+📱 SERVICIOS
+├── #jellyfin
+├── #arr-stack
+├── #nextcloud
+├── #immich
+├── #paperless
+└── #navidrome
+
+💻 DOTFILES
+├── #commits             ← GitHub webhook
+└── #ideas
+
+🔊 VOZ
+├── 🔈 General
+└── 🔈 Lab Session
+```
+
+### Webhooks de Discord (crear uno por canal)
+En cada canal → Editar canal → Integraciones → Webhooks → Nuevo webhook:
+- `#status` → "Komodo Status"
+- `#deploys` → "Komodo Deploys"
+- `#monitor` → "Komodo Monitor"
+
+### Alerters en Komodo (Settings → Alerters)
+Un Alerter por cada webhook de Discord:
+
+**Alerter 1 - Status**
+- URL: webhook de `#status`
+- Alert Types: `ServerCpu`, `ServerMem`, `ServerDisk`, `ServerUnreachable`
+- Resource Whitelist: `pilla`
+
+**Alerter 2 - Deploys**
+- URL: webhook de `#deploys`
+- Alert Types: `StackStateChange`, `DeploymentStateChange`, `BuildComplete`, `BuildFailed`
+
+**Alerter 3 - Monitor**
+- URL: webhook de `#monitor`
+- Alert Types: `ContainerStateChange`
+
+### GitHub → Discord
+En GitHub repo `Homelab`:
+1. Settings → Webhooks → Add webhook
+2. Payload URL: webhook de Discord
+3. Content type: `application/json`
+4. Events: Push
+5. Secret: configurar en Komodo si se usa auto-redeploy
 
 ## Despliegue
 1. Crear/ editar compose y .env en `Compose/<StackName>/`
@@ -149,3 +215,7 @@ Script de serve: `/home/villacus/tailscale`
    - Ejecutar el comando en la Pi
    - Aprobar en Tailscale Admin
 6. Actualizar Glance si es un servicio nuevo
+7. Configurar webhooks en Discord si aplica:
+   - Crear webhook en el canal correspondiente
+   - Añadir Alerter en Komodo (Settings → Alerters)
+   - Test Alerter para verificar
