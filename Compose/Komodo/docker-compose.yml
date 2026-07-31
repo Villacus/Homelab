@@ -1,11 +1,18 @@
+name: komodo
+
 services:
   komodo-db:
     image: ghcr.io/ferretdb/ferretdb:1
     container_name: komodo-db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
     restart: unless-stopped
     user: "0:0"
     volumes:
-      - ${KOMODO_PATH}/komodo_data:/data
+      - komodo-db-data:/data
     environment:
       - FERRETDB_HANDLER=sqlite
       - FERRETDB_SQLITE_URL=file:/data/
@@ -13,6 +20,11 @@ services:
   komodo-core:
     image: ghcr.io/moghtech/komodo-core:latest
     container_name: komodo-core
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
     restart: unless-stopped
     init: true
     ports:
@@ -28,17 +40,24 @@ services:
       - KOMODO_LOCAL_AUTH=true
       - KOMODO_ENABLE_NEW_USERS=true
       - KOMODO_JWT_SECRET=${KOMODO_JWT_SECRET}
-      - KOMODO_HOST=https://komodo.tailf45616.ts.net
-      
+
   komodo-periphery:
     image: ghcr.io/moghtech/komodo-periphery:latest
     container_name: komodo-periphery
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
     restart: unless-stopped
     environment:
       - TZ=${TZ}
-      - KOMODO_STACK_DIR=/configs/stacks
+      - PERIPHERY_STACK_DIR=/configs/app/stacks
     ports:
       - "${PERIPHERY_PORT}:8120"
     volumes:
       - ${DOCKER_SOCKET}:/var/run/docker.sock
       - ${KOMODO_PATH}/stacks:/configs/app/stacks
+
+volumes:
+  komodo-db-data:

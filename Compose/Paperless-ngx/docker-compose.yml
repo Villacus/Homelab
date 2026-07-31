@@ -4,6 +4,11 @@ services:
   broker:
     image: docker.io/library/redis:8
     container_name: paperless-redis
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
     restart: unless-stopped
     volumes:
       - redisdata:/data
@@ -13,6 +18,11 @@ services:
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     container_name: paperless
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
     restart: unless-stopped
     depends_on:
       - broker

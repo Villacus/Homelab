@@ -89,8 +89,8 @@ deploy:
 
 | Tier | CPU | Memoria | Servicios |
 |------|-----|---------|-----------|
-| Light | 0.25 | 128M | Redis, Unbound, Speedtest, Prowlarr, Bazarr |
-| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless-ngx |
+| Light | 0.25 | 128M | Redis, Unbound, Speedtest, Prowlarr, Bazarr, Glance, Immich Redis, Paperless Broker, Komodo DB/Periphery |
+| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless, Navidrome, Samba, Portainer, Komodo Core, Immich Postgres |
 | Heavy | 1.0 | 512M-1G | Nextcloud, Immich Server |
 | Heaviest | 2.0 | 2G | Jellyfin |
 
