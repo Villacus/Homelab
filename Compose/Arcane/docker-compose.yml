@@ -1,0 +1,24 @@
+name: arcane
+
+services:
+  arcane:
+    image: ghcr.io/getarcaneapp/manager:latest
+    container_name: arcane
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - APP_URL=${ARCANE_URL}
+      - ENCRYPTION_KEY=${ARCANE_ENCRYPTION_KEY}
+      - JWT_SECRET=${ARCANE_JWT_SECRET}
+    ports:
+      - '${ARCANE_PORT}:3552'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${ARCANE_DATA}:/app/data
+    restart: unless-stopped

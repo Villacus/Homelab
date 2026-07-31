@@ -70,6 +70,7 @@ SERVICE_PORT=XXXX
 | 9000 | Portainer |
 | 9120 | Komodo Core |
 | 9696 | Prowlarr |
+| 3552 | Arcane |
 | 2283 | Immich |
 
 ### Container names
@@ -137,6 +138,7 @@ https://pihole.tailf45616.ts.net
 https://glance.tailf45616.ts.net
 https://komodo.tailf45616.ts.net
 https://paperless.tailf45616.ts.net
+https://arcane.tailf45616.ts.net
 ```
 
 Script de serve: `/home/villacus/tailscale`
