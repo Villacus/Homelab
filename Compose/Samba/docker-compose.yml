@@ -28,7 +28,6 @@ services:
       - "Privada;/mnt/privada;yes;no;no;${SAMBA_USER1}"
       - "-s"
       - "Compartida;/mnt/compartida;yes;no;no;${SAMBA_USER2}"
-      - "-p"
       - "-n"
     environment:
       - TZ=${TZ}

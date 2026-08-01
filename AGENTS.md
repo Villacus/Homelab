@@ -67,7 +67,6 @@ SERVICE_PORT=XXXX
 | 8686 | Lidarr |
 | 8787 | Readarr |
 | 8989 | Sonarr |
-| 9000 | Portainer |
 | 9120 | Komodo Core |
 | 9696 | Prowlarr |
 | 3552 | Arcane |
@@ -90,7 +89,7 @@ deploy:
 | Tier | CPU | Memoria | Servicios |
 |------|-----|---------|-----------|
 | Light | 0.25 | 128M | Redis, Unbound, Speedtest, Prowlarr, Bazarr, Glance, Immich Redis, Paperless Broker, Komodo DB/Periphery |
-| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless, Navidrome, Samba, Portainer, Komodo Core, Immich Postgres |
+| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless, Navidrome, Samba, Komodo Core, Immich Postgres |
 | Heavy | 1.0 | 512M-1G | Nextcloud, Immich Server |
 | Heaviest | 2.0 | 2G | Jellyfin |
 
@@ -101,7 +100,7 @@ deploy:
 
 ### Volúmenes
 - Bind mounts con variables de `.env`
-- Named volumes solo para Redis/Portainer
+- Named volumes solo para Redis
 - `:ro` para media read-only, `/etc/localtime`, Docker socket
 
 ### Restart policy
