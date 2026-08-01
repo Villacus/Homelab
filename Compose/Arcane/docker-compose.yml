@@ -21,4 +21,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${ARCANE_DATA}:/app/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped

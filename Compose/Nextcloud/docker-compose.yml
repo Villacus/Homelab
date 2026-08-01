@@ -14,6 +14,11 @@ services:
     stop_grace_period: 30s
     volumes:
       - ${NEXTCLOUD_PATH}/db:/var/lib/postgresql/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: always
 
 
@@ -25,6 +30,11 @@ services:
         limits:
           cpus: '0.5'
           memory: 128M
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: always
 
   app:
@@ -58,6 +68,11 @@ services:
     depends_on:
       - db
       - redis
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: always
 
 
@@ -74,4 +89,9 @@ services:
     entrypoint: /cron.sh
     depends_on:
       - db
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: always

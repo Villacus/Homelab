@@ -20,6 +20,11 @@ services:
       - ${LOCALTIME}:/etc/localtime:ro
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
   sonarr:
@@ -41,6 +46,11 @@ services:
       - ${MEDIA_ROOT}:/media
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
   radarr:
@@ -62,6 +72,11 @@ services:
       - ${MEDIA_ROOT}:/media
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
   prowlarr:
@@ -82,6 +97,11 @@ services:
       - ${PROWLARR_CONFIG}:/config
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
   qbittorrent:
@@ -107,6 +127,11 @@ services:
       - ${MEDIA_ROOT}:/media
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
   bazarr:
@@ -128,6 +153,11 @@ services:
       - ${MEDIA_ROOT}:/media
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
   lidarr:
@@ -149,6 +179,11 @@ services:
       - ${MEDIA_ROOT}:/media
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
   readarr:
@@ -170,6 +205,11 @@ services:
       - ${MEDIA_ROOT}:/media
     networks:
       - arrnet
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped
 
 networks:

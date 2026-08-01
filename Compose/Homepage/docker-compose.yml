@@ -19,4 +19,9 @@ services:
       - ${NAS_PATH}:/mnt/nasdisk:ro
     ports:
       - ${HOMEPAGE_PORT}:3000
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped

@@ -18,4 +18,9 @@ services:
       - ${NAVIDROME_DATA_PATH}:/data
       - ${NAVIDROME_MUSIC_PATH}:/music:ro
     user: ${NAVIDROME_UID}:${NAVIDROME_GID}
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: unless-stopped

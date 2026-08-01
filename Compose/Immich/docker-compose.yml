@@ -17,6 +17,11 @@ services:
     depends_on:
       - redis
       - database
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: always
     healthcheck:
       disable: false
@@ -31,6 +36,11 @@ services:
           memory: 128M
     healthcheck:
       test: redis-cli ping || exit 1
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: always
 
   database:
@@ -51,6 +61,11 @@ services:
     volumes:
       - ${DB_DATA_PATH}:/var/lib/postgresql/data
     shm_size: 128mb
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
     restart: always
     healthcheck:
       disable: false
