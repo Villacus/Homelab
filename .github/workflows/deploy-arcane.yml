@@ -15,7 +15,6 @@ jobs:
       glance: ${{ steps.filter.outputs.glance }}
       immich: ${{ steps.filter.outputs.immich }}
       jellyfin_arr: ${{ steps.filter.outputs.jellyfin_arr }}
-      komodo: ${{ steps.filter.outputs.komodo }}
       navidrome: ${{ steps.filter.outputs.navidrome }}
       nextcloud: ${{ steps.filter.outputs.nextcloud }}
       paperless_ngx: ${{ steps.filter.outputs.paperless_ngx }}
@@ -38,8 +37,6 @@ jobs:
               - 'Compose/Immich/**'
             jellyfin_arr:
               - 'Compose/Jellyfin-ARR/**'
-            komodo:
-              - 'Compose/Komodo/**'
             navidrome:
               - 'Compose/Navidrome/**'
             nextcloud:
@@ -77,10 +74,6 @@ jobs:
       - name: Actualizar Jellyfin-ARR
         if: needs.detect-changes.outputs.jellyfin_arr == 'true'
         run: curl -X POST "${{ secrets.WEBHOOK_JELLYFIN_ARR }}"
-
-      - name: Actualizar Komodo
-        if: needs.detect-changes.outputs.komodo == 'true'
-        run: curl -X POST "${{ secrets.WEBHOOK_KOMODO }}"
 
       - name: Actualizar Navidrome
         if: needs.detect-changes.outputs.navidrome == 'true'
