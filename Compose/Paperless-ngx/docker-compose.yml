@@ -47,6 +47,7 @@ services:
       - PAPERLESS_REDIS=redis://broker:6379
       - PAPERLESS_DBENGINE=sqlite
       - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
+      - PAPERLESS_URL=${PAPERLESS_URL}
     networks:
       - paperless
 
