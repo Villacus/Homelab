@@ -1,0 +1,118 @@
+name: Actualizar Contenedores Homelab
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Compose/**' # Solo se ejecuta si hay cambios dentro de la carpeta Compose
+
+jobs:
+  # Trabajo 1: Analizar qué carpetas específicas han tenido cambios
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      glance: ${{ steps.filter.outputs.glance }}
+      homepage: ${{ steps.filter.outputs.homepage }}
+      immich: ${{ steps.filter.outputs.immich }}
+      jellyfin_arr: ${{ steps.filter.outputs.jellyfin_arr }}
+      komodo: ${{ steps.filter.outputs.komodo }}
+      navidrome: ${{ steps.filter.outputs.navidrome }}
+      nextcloud: ${{ steps.filter.outputs.nextcloud }}
+      paperless_ngx: ${{ steps.filter.outputs.paperless_ngx }}
+      pihole: ${{ steps.filter.outputs.pihole }}
+      samba: ${{ steps.filter.outputs.samba }}
+      speedtest: ${{ steps.filter.outputs.speedtest }}
+      vaultwarden: ${{ steps.filter.outputs.vaultwarden }}
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        
+      - name: Detectar cambios por servicio
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            glance:
+              - 'Compose/Glance/**'
+            homepage:
+              - 'Compose/Homepage/**'
+            immich:
+              - 'Compose/Immich/**'
+            jellyfin_arr:
+              - 'Compose/Jellyfin-ARR/**'
+            komodo:
+              - 'Compose/Komodo/**'
+            navidrome:
+              - 'Compose/Navidrome/**'
+            nextcloud:
+              - 'Compose/Nextcloud/**'
+            paperless_ngx:
+              - 'Compose/Paperless-ngx/**'
+            pihole:
+              - 'Compose/Pi-hole/**'
+            samba:
+              - 'Compose/Samba/**'
+            speedtest:
+              - 'Compose/Speedtest/**'
+            vaultwarden:
+              - 'Compose/Vaultwarden/**'
+
+  # Trabajo 2: Entrar a la Tailnet y lanzar webhooks
+  trigger-webhooks:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Conectar a la Tailnet
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Actualizar Glance
+        if: needs.detect-changes.outputs.glance == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_GLANCE }}"
+
+      - name: Actualizar Homepage
+        if: needs.detect-changes.outputs.homepage == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_HOMEPAGE }}"
+
+      - name: Actualizar Immich
+        if: needs.detect-changes.outputs.immich == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_IMMICH }}"
+
+      - name: Actualizar Jellyfin-ARR
+        if: needs.detect-changes.outputs.jellyfin_arr == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_JELLYFIN_ARR }}"
+
+      - name: Actualizar Komodo
+        if: needs.detect-changes.outputs.komodo == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_KOMODO }}"
+
+      - name: Actualizar Navidrome
+        if: needs.detect-changes.outputs.navidrome == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_NAVIDROME }}"
+
+      - name: Actualizar Nextcloud
+        if: needs.detect-changes.outputs.nextcloud == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_NEXTCLOUD }}"
+
+      - name: Actualizar Paperless-ngx
+        if: needs.detect-changes.outputs.paperless_ngx == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_PAPERLESS_NGX }}"
+
+      - name: Actualizar Pi-hole
+        if: needs.detect-changes.outputs.pihole == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_PIHOLE }}"
+
+      - name: Actualizar Samba
+        if: needs.detect-changes.outputs.samba == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_SAMBA }}"
+
+      - name: Actualizar Speedtest
+        if: needs.detect-changes.outputs.speedtest == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_SPEEDTEST }}"
+
+      - name: Actualizar Vaultwarden
+        if: needs.detect-changes.outputs.vaultwarden == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_VAULTWARDEN }}"
