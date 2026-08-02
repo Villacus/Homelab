@@ -136,7 +136,7 @@ https://immich.tailf45616.ts.net
 https://pihole.tailf45616.ts.net
 https://glance.tailf45616.ts.net
 https://komodo.tailf45616.ts.net
-https://paperless.tailf45616.ts.net
+https://paperless-ngx.tailf45616.ts.net
 https://arcane.tailf45616.ts.net
 ```
 
