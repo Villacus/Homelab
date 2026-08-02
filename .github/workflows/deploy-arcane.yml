@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       glance: ${{ steps.filter.outputs.glance }}
-      homepage: ${{ steps.filter.outputs.homepage }}
       immich: ${{ steps.filter.outputs.immich }}
       jellyfin_arr: ${{ steps.filter.outputs.jellyfin_arr }}
       komodo: ${{ steps.filter.outputs.komodo }}
@@ -35,8 +34,6 @@ jobs:
           filters: |
             glance:
               - 'Compose/Glance/**'
-            homepage:
-              - 'Compose/Homepage/**'
             immich:
               - 'Compose/Immich/**'
             jellyfin_arr:
@@ -72,10 +69,6 @@ jobs:
       - name: Actualizar Glance
         if: needs.detect-changes.outputs.glance == 'true'
         run: curl -X POST "${{ secrets.WEBHOOK_GLANCE }}"
-
-      - name: Actualizar Homepage
-        if: needs.detect-changes.outputs.homepage == 'true'
-        run: curl -X POST "${{ secrets.WEBHOOK_HOMEPAGE }}"
 
       - name: Actualizar Immich
         if: needs.detect-changes.outputs.immich == 'true'
