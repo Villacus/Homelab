@@ -68,7 +68,11 @@ services:
         max-file: 3
     restart: always
     healthcheck:
-      disable: false
+      test: ["CMD-SHELL", "/usr/lib/postgresql/14/bin/pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\" && /usr/lib/postgresql/14/bin/psql -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\" -tAc \"SELECT CASE WHEN COALESCE(SUM(checksum_failures),0)=0 THEN 'ok' ELSE 'fail' END FROM pg_stat_database\" | grep -q ok"]
+      interval: 5m
+      timeout: 30s
+      retries: 3
+      start_period: 5m
 
 volumes:
   model-cache:
