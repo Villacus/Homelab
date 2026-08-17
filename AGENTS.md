@@ -60,6 +60,7 @@ SERVICE_PORT=XXXX
 | 8080 | Vaultwarden |
 | 8081 | Nextcloud |
 | 8082 | Glance |
+| 8083 | NUT Bridge (UPS, host) |
 | 8085 | qBittorrent (WebUI) |
 | 8096 | Jellyfin |
 | 8120 | Komodo Periphery |
@@ -71,6 +72,7 @@ SERVICE_PORT=XXXX
 | 9696 | Prowlarr |
 | 3552 | Arcane |
 | 2283 | Immich |
+| 20128 | OmniRoute |
 
 ### Container names
 - Siempre explícitos (`container_name:`)
@@ -138,6 +140,7 @@ https://glance.tailf45616.ts.net
 https://komodo.tailf45616.ts.net
 https://paperless-ngx.tailf45616.ts.net
 https://arcane.tailf45616.ts.net
+https://omniroute.tailf45616.ts.net
 ```
 
 Script de serve: `/home/villacus/tailscale`

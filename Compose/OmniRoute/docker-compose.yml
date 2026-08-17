@@ -1,0 +1,27 @@
+name: omniroute
+
+services:
+  omniroute:
+    image: node:20-alpine
+    container_name: omniroute
+    restart: unless-stopped
+    ports:
+      - "${OMNIROUTE_PORT}:20128"
+    environment:
+      - TZ=${TZ}
+      - HOME=/root
+    volumes:
+      - ${OMNIROUTE_DATA}:/root/.omniroute
+      - /etc/localtime:/etc/localtime:ro
+    working_dir: /root
+    command: npx omniroute --no-open --port 20128
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
