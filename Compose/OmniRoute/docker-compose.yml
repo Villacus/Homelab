@@ -10,7 +10,7 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - ${OMNIROUTE_DATA}:/root/.omniroute
+      - ${OMNIROUTE_DATA}:/home/node/.omniroute
       - /etc/localtime:/etc/localtime:ro
     deploy:
       resources:
