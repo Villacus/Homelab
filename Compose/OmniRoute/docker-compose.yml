@@ -2,25 +2,23 @@ name: omniroute
 
 services:
   omniroute:
-    image: node:20-alpine
+    image: diegosouzapw/omniroute:latest
     container_name: omniroute
     restart: unless-stopped
     ports:
       - "${OMNIROUTE_PORT}:20128"
     environment:
       - TZ=${TZ}
-      - HOME=/root
-      - NPM_CONFIG_CACHE=/root/.npm-cache
     volumes:
       - ${OMNIROUTE_DATA}:/root/.omniroute
       - /etc/localtime:/etc/localtime:ro
-      - omniroute_npm_cache:/root/.npm-cache
-    working_dir: /root
-    command: sh -c "npm install -g omniroute@latest && omniroute --no-open --port 20128"
     deploy:
       resources:
         limits:
           cpus: '0.5'
           memory: 512M
-volumes:
-  omniroute_npm_cache:
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
