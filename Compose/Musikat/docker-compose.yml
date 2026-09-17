@@ -1,38 +1,64 @@
+name: musikat
+
 services:
   musikat:
     build:
-      context: .
+      context: https://github.com/soggy8/musikat.git#54f638d60d824655d505796af73544af32e2006b
       dockerfile: Dockerfile
     container_name: musikat
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
     restart: unless-stopped
     ports:
-      - "8000:8000"
-    env_file:
-      - .env
+      - '${MUSIKAT_PORT:-8010}:8000'
     volumes:
-      # Mount Navidrome music directory (REQUIRED: Change to your actual Navidrome music path)
-      # Example: - /path/to/navidrome/music:/music:rw
-      - ./navidrome-music:/music:rw
-      # Mount downloads directory for temp files (optional, for persistence)
-      - ./downloads:/app/downloads:rw
-      # Mount YouTube cookies file (optional, for bypassing bot detection)
-      # Uncomment and set path to your cookies file:
-      # - /path/to/youtube_cookies.txt:/app/youtube_cookies.txt:ro
+      # Navidrome's Jonpa library; Musikat needs write access to save downloads.
+      - ${MUSIKAT_LIBRARY_PATH:-/mnt/nasdisk/privada/Musica_jon}:/music:rw
+      # Temporary download files are kept outside the container.
+      - ${MUSIKAT_DOWNLOADS_PATH:-/home/villacus/musikat/downloads}:/app/downloads:rw
+      # YouTube cookies are optional; add the bind and YOUTUBE_COOKIES_PATH in Arcane if needed.
     environment:
-      - API_HOST=0.0.0.0
-      - API_PORT=8000
-      - NAVIDROME_MUSIC_PATH=/music
-      # If Navidrome is running in another container, use service name
-      # If running on host, use host.docker.internal (or 172.17.0.1 on Linux)
-      - NAVIDROME_API_URL=${NAVIDROME_API_URL:-http://host.docker.internal:4533}
-      # YouTube cookies file path (optional, for bypassing bot detection)
-      # Set this if you mounted a cookies file volume above
-      # - YOUTUBE_COOKIES_PATH=/app/youtube_cookies.txt
-    # Uncomment if Navidrome is on Linux host (may need 172.17.0.1 instead of host.docker.internal)
-    # extra_hosts:
-    #   - "host.docker.internal:host-gateway"
+      TZ: ${TZ:-Europe/Madrid}
+      API_HOST: ${API_HOST:-0.0.0.0}
+      API_PORT: ${API_PORT:-8000}
+      DEFAULT_METADATA_PROVIDER: ${DEFAULT_METADATA_PROVIDER:-deezer}
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID:-}
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET:-}
+      SPOTIFY_REDIRECT_URI: ${SPOTIFY_REDIRECT_URI:-http://localhost:8010/callback}
+      NAVIDROME_MUSIC_PATH: /music
+      NAVIDROME_MUSIC_PATHS: ${NAVIDROME_MUSIC_PATHS:-/music}
+      NAVIDROME_MUSIC_LABELS: ${NAVIDROME_MUSIC_LABELS:-Jonpa}
+      NAVIDROME_API_URL: ${NAVIDROME_API_URL:-http://host.docker.internal:4533}
+      NAVIDROME_USERNAME: ${NAVIDROME_USERNAME:-}
+      NAVIDROME_PASSWORD: ${NAVIDROME_PASSWORD:-}
+      NAVIDROME_SYNC_ENABLED: ${NAVIDROME_SYNC_ENABLED:-false}
+      NAVIDROME_SYNC_INTERVAL_HOURS: ${NAVIDROME_SYNC_INTERVAL_HOURS:-4}
+      NAVIDROME_SYNC_INITIAL_DELAY_SEC: ${NAVIDROME_SYNC_INITIAL_DELAY_SEC:-120}
+      NAVIDROME_SYNC_API_DELAY_SEC: ${NAVIDROME_SYNC_API_DELAY_SEC:-0.12}
+      DOWNLOAD_DIR: ${DOWNLOAD_DIR:-/app/downloads}
+      OUTPUT_FORMAT: ${OUTPUT_FORMAT:-mp3}
+      AUDIO_QUALITY: ${AUDIO_QUALITY:-128}
+      TEMP_FILE_CLEANUP_DELAY_SEC: ${TEMP_FILE_CLEANUP_DELAY_SEC:-60}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8010,http://127.0.0.1:8010,http://192.168.0.9:8010}
+    user: ${PUID:-1000}:${PGID:-1000}
+    healthcheck:
+      test: ['CMD', 'python', '-c', 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8000/api/health")']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     networks:
-      - navidrome_default
+      - music-network
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
 
 networks:
   music-network:

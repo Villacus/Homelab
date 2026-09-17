@@ -57,6 +57,7 @@ SERVICE_PORT=XXXX
 | 7000 | Komodo Discord Alerter |
 | 7878 | Radarr |
 | 8000 | Paperless-ngx |
+| 8010 | Musikat |
 | 8080 | Vaultwarden |
 | 8081 | Nextcloud |
 | 8082 | Glance |
