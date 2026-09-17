@@ -2,8 +2,9 @@ name: musikat
 
 services:
   musikat:
+    # Arcane debe tener habilitado BuildKit para clonar este contexto Git.
     build:
-      context: https://github.com/soggy8/musikat.git#54f638d60d824655d505796af73544af32e2006b
+      context: https://github.com/soggy8/musikat.git#main
       dockerfile: Dockerfile
     container_name: musikat
     deploy:
