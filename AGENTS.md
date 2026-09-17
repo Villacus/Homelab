@@ -1,7 +1,8 @@
-# Homelab - Guía de estructura
+# Homelab Documentation
 
-Repositorio de configuraciones Docker para el homelab desplegado en la Pi (`pilla`).
+La documentación ha sido migrada a la carpeta `docs/` en formato Obsidian. 
 
+<<<<<<< Updated upstream
 ## Estructura del repo
 
 ```
@@ -224,3 +225,6 @@ En GitHub repo `Homelab`:
    - Crear webhook en el canal correspondiente
    - Añadir Alerter en Komodo (Settings → Alerters)
    - Test Alerter para verificar
+=======
+Por favor, accede a [[docs/index|la documentación principal]].
+>>>>>>> Stashed changes

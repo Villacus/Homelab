@@ -1,5 +1,3 @@
-# Homelab - Próximos Pasos y Objetivos de Aprendizaje
-
 Lista de proyectos técnicos para enriquecer conocimientos en administración de sistemas, redes, DevOps y seguridad, aprovechando la infraestructura actual.
 
 ---
