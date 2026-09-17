@@ -22,6 +22,7 @@ jobs:
       samba: ${{ steps.filter.outputs.samba }}
       speedtest: ${{ steps.filter.outputs.speedtest }}
       vaultwarden: ${{ steps.filter.outputs.vaultwarden }}
+      musikat: ${{ steps.filter.outputs.musikat }}
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
@@ -51,6 +52,8 @@ jobs:
               - 'Compose/Speedtest/**'
             vaultwarden:
               - 'Compose/Vaultwarden/**'
+            musikat:
+              - 'Compose/Musikat/**'
 
   # Trabajo 2: Entrar a la Tailnet y lanzar webhooks
   trigger-webhooks:
@@ -78,6 +81,10 @@ jobs:
       - name: Actualizar Navidrome
         if: needs.detect-changes.outputs.navidrome == 'true'
         run: curl -X POST "${{ secrets.WEBHOOK_NAVIDROME }}"
+
+      - name: Actualizar Musikat
+        if: needs.detect-changes.outputs.musikat == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_MUSIKAT }}"
 
       - name: Actualizar Nextcloud
         if: needs.detect-changes.outputs.nextcloud == 'true'

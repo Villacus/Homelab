@@ -141,6 +141,7 @@ https://pihole.tailf45616.ts.net
 https://glance.tailf45616.ts.net
 https://komodo.tailf45616.ts.net
 https://paperless-ngx.tailf45616.ts.net
+https://musikat.tailf45616.ts.net (cuando se configure `tailscale serve` para el puerto 8010)
 https://arcane.tailf45616.ts.net
 https://omniroute.tailf45616.ts.net
 ```
@@ -220,8 +221,10 @@ En GitHub repo `Homelab`:
      ```
    - Ejecutar el comando en la Pi
    - Aprobar en Tailscale Admin
-6. Actualizar Glance si es un servicio nuevo
-7. Configurar webhooks en Discord si aplica:
+6. Para Musikat, Arcane debe poder construir el contexto Git remoto con BuildKit; configura el stack desde `Compose/Musikat/` y crea `/home/villacus/musikat/downloads` con permisos para UID/GID `1000:1000`.
+7. Para el redeploy automático de Musikat, crea su webhook en Arcane y guarda la URL como secreto de Actions `WEBHOOK_MUSIKAT` en GitHub. No guardes URLs de webhooks ni credenciales en Git.
+8. Actualizar Glance si es un servicio nuevo
+9. Configurar webhooks en Discord si aplica:
    - Crear webhook en el canal correspondiente
    - Añadir Alerter en Komodo (Settings → Alerters)
    - Test Alerter para verificar

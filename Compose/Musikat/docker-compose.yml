@@ -16,8 +16,10 @@ services:
     ports:
       - '${MUSIKAT_PORT:-8010}:8000'
     volumes:
-      # Navidrome's Jonpa library; Musikat needs write access to save downloads.
-      - ${MUSIKAT_LIBRARY_PATH:-/mnt/nasdisk/privada/Musica_jon}:/music:rw
+      # The three Navidrome roots are exposed as separate Musikat destinations.
+      - ${MUSIKAT_MUSIC_PATH:-/mnt/nasdisk/privada/Musica}:/music/main:rw
+      - ${MUSIKAT_ITZIAR_MUSIC_PATH:-/mnt/nasdisk/compartida/Musica}:/music/itziar:rw
+      - ${MUSIKAT_JONPA_MUSIC_PATH:-/mnt/nasdisk/privada/Musica_jon}:/music/jonpa:rw
       # Temporary download files are kept outside the container.
       - ${MUSIKAT_DOWNLOADS_PATH:-/home/villacus/musikat/downloads}:/app/downloads:rw
       # YouTube cookies are optional; add the bind and YOUTUBE_COOKIES_PATH in Arcane if needed.
@@ -29,9 +31,9 @@ services:
       SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID:-}
       SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET:-}
       SPOTIFY_REDIRECT_URI: ${SPOTIFY_REDIRECT_URI:-http://localhost:8010/callback}
-      NAVIDROME_MUSIC_PATH: /music
-      NAVIDROME_MUSIC_PATHS: ${NAVIDROME_MUSIC_PATHS:-/music}
-      NAVIDROME_MUSIC_LABELS: ${NAVIDROME_MUSIC_LABELS:-Jonpa}
+      NAVIDROME_MUSIC_PATH: /music/jonpa
+      NAVIDROME_MUSIC_PATHS: ${NAVIDROME_MUSIC_PATHS:-/music/main,/music/itziar,/music/jonpa}
+      NAVIDROME_MUSIC_LABELS: ${NAVIDROME_MUSIC_LABELS:-Musica,Itziar,Jonpa}
       NAVIDROME_API_URL: ${NAVIDROME_API_URL:-http://host.docker.internal:4533}
       NAVIDROME_USERNAME: ${NAVIDROME_USERNAME:-}
       NAVIDROME_PASSWORD: ${NAVIDROME_PASSWORD:-}

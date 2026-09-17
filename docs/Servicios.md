@@ -17,6 +17,7 @@ Para obtener información detallada sobre cómo se configuran estos servicios, c
 | 6881 | qBittorrent (DHT) | [Docs](https://www.qbittorrent.org/) |
 | 7878 | Radarr | [Docs](https://radarr.video/) |
 | 8000 | Paperless-ngx | [Docs](https://docs.paperless-ngx.com/) |
+| 8010 | Musikat | [Repositorio](https://github.com/soggy8/musikat) |
 | 8080 | Vaultwarden | [Docs](https://github.com/dani-garcia/vaultwarden) |
 | 8081 | Nextcloud | [Docs](https://nextcloud.com/) |
 | 8082 | Glance | [Docs](https://glance.nhat.dev/) |
@@ -39,7 +40,7 @@ Los servicios están organizados en niveles (tiers) basados en su consumo típic
 | Tier | CPU | Memoria | Servicios |
 |------|-----|---------|-----------|
 | Light | 0.25 | 128M | Redis, Unbound, Speedtest, Prowlarr, Bazarr, Glance, Immich Redis, Paperless Broker |
-| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless, Navidrome, Samba, Immich Postgres |
+| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless, Navidrome, Musikat, Samba, Immich Postgres |
 | Heavy | 1.0 | 512M-1G | Nextcloud, Immich Server |
 | Heaviest | 2.0 | 2G | Jellyfin |
 

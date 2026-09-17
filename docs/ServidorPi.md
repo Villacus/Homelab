@@ -19,6 +19,11 @@ Para gestionar la exposición de nuevos servicios, consulta el flujo de trabajo 
 
 ### Lista de Servicios Expuestos
 
+Musikat también está disponible localmente en `http://192.168.0.9:8010`.
+La URL Tailscale prevista para Musikat es
+`https://musikat.tailf45616.ts.net`, pero solo estará disponible después de
+añadir su comando `tailscale serve` en la Pi.
+
 ```
 https://jellyfin.tailf45616.ts.net
 https://sonarr.tailf45616.ts.net
