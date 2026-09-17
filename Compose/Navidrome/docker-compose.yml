@@ -18,6 +18,7 @@ services:
       - ${NAVIDROME_DATA_PATH}:/data
       - ${NAVIDROME_MUSIC_PATH}:/music:ro
       - ${NAVIDROME_ITZIAR_MUSIC_PATH}:/itziar_music:ro
+      - ${NAVIDROME_JONPA_MUSIC_PATH}:/jonpa_music:ro
     user: ${NAVIDROME_UID}:${NAVIDROME_GID}
     logging:
       driver: json-file
