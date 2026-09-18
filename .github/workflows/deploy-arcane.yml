@@ -23,6 +23,7 @@ jobs:
       speedtest: ${{ steps.filter.outputs.speedtest }}
       vaultwarden: ${{ steps.filter.outputs.vaultwarden }}
       musikat: ${{ steps.filter.outputs.musikat }}
+      nginx: ${{ steps.filter.outputs.nginx }}
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
@@ -54,6 +55,8 @@ jobs:
               - 'Compose/Vaultwarden/**'
             musikat:
               - 'Compose/Musikat/**'
+            nginx:
+              - 'Compose/Nginx/**'
 
   # Trabajo 2: Entrar a la Tailnet y lanzar webhooks
   trigger-webhooks:
@@ -85,6 +88,10 @@ jobs:
       - name: Actualizar Musikat
         if: needs.detect-changes.outputs.musikat == 'true'
         run: curl -X POST "${{ secrets.WEBHOOK_MUSIKAT }}"
+
+      - name: Actualizar Nginx Proxy Manager
+        if: needs.detect-changes.outputs.nginx == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_NGINX }}"
 
       - name: Actualizar Nextcloud
         if: needs.detect-changes.outputs.nextcloud == 'true'

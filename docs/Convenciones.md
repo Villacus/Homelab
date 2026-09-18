@@ -48,7 +48,14 @@ Puedes consultar los niveles de recursos recomendados para cada servicio en [[Se
 ## Redes
 - Por defecto, los servicios utilizan el *Default Project Bridge*.
 - Para stacks complejos que requieren aislamiento o comunicación específica, se definen redes de tipo *bridge custom* (ej. `arrnet`, `paperless`).
+- Cuando varios stacks necesitan comunicarse, se utiliza una red `bridge` externa con un nombre físico fijo. Debe crearse una sola vez antes del despliegue y declararse con `external: true`; todos los stacks deben usar exactamente el mismo valor en `name:`.
+- Una red externa no la crea ni la elimina Compose. Los contenedores se descubren por su nombre de servicio (por ejemplo, `navidrome:4533` y `musikat:8000`), no por el puerto publicado en el host.
 - Servicios que requieren acceso directo a la red del host, como `Pi-hole`, deben utilizar `network_mode: host`.
+
+### Nginx Proxy Manager
+- Nginx Proxy Manager utiliza el stack `Compose/Nginx/` y la red externa compartida con Navidrome y Musikat.
+- Los puertos del host deben parametrizarse en `.env`. En la configuración actual son `8084` (HTTP), `8444` (HTTPS) y `8181` (panel); dentro del contenedor siguen siendo `80`, `443` y `81` respectivamente.
+- El panel se configura desde la interfaz de Nginx Proxy Manager. Los Proxy Hosts de Navidrome y Musikat deben apuntar a `http://navidrome:4533` y `http://musikat:8000`.
 
 ## Volúmenes
 - Se prefieren los *bind mounts* definidos con variables del archivo `.env` para facilitar la gestión.
@@ -57,5 +64,5 @@ Puedes consultar los niveles de recursos recomendados para cada servicio en [[Se
 
 ## Políticas de Reinicio y Parada
 - Se utiliza `unless-stopped` para la mayoría de los servicios para asegurar que se reinicien automáticamente si el contenedor se detiene, a menos que se apaguen manualmente.
-- Para servicios críticos como `Vaultwarden`, `Nextcloud`, `Immich` o `Pi-hole`, se utiliza la política `always` para garantizar su disponibilidad constante.
+- Para servicios críticos como `Vaultwarden`, `Immich` o `Pi-hole`, se utiliza la política `always` para garantizar su disponibilidad constante.
 - Se debe definir un `stop_grace_period` de `30s` para servicios que manejan bases de datos, permitiendo una parada limpia y evitando la corrupción de datos.

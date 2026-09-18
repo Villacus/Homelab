@@ -22,9 +22,12 @@ Para obtener información detallada sobre cómo se configuran estos servicios, c
 | 8081 | Nextcloud | [Docs](https://nextcloud.com/) |
 | 8082 | Glance | [Docs](https://glance.nhat.dev/) |
 | 8083 | NUT Bridge | [Docs](https://networkupstools.org/) |
+| 8084 | Nginx Proxy Manager (HTTP) | [Docs](https://nginxproxymanager.com/) |
 | 8085 | qBittorrent (WebUI) | [Docs](https://www.qbittorrent.org/) |
+| 8181 | Nginx Proxy Manager (panel) | [Docs](https://nginxproxymanager.com/) |
 | 8096 | Jellyfin | [Docs](https://jellyfin.org/) |
 | 8443 | qBittorrent (TLS) | [Docs](https://www.qbittorrent.org/) |
+| 8444 | Nginx Proxy Manager (HTTPS) | [Docs](https://nginxproxymanager.com/) |
 | 8686 | Lidarr | [Docs](https://lidarr.audio/) |
 | 8787 | Readarr | [Docs](https://readarr.com/) |
 | 8989 | Sonarr | [Docs](https://sonarr.tv/) |
@@ -40,7 +43,7 @@ Los servicios están organizados en niveles (tiers) basados en su consumo típic
 | Tier | CPU | Memoria | Servicios |
 |------|-----|---------|-----------|
 | Light | 0.25 | 128M | Redis, Unbound, Speedtest, Prowlarr, Bazarr, Glance, Immich Redis, Paperless Broker |
-| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless, Navidrome, Musikat, Samba, Immich Postgres |
+| Medium | 0.5 | 256M-512M | Sonarr, Radarr, Lidarr, Readarr, qBittorrent, Vaultwarden, Paperless, Navidrome, Musikat, Nginx Proxy Manager, Samba, Immich Postgres |
 | Heavy | 1.0 | 512M-1G | Nextcloud, Immich Server |
 | Heaviest | 2.0 | 2G | Jellyfin |
 

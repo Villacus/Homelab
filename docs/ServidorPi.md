@@ -24,6 +24,12 @@ La URL Tailscale prevista para Musikat es
 `https://musikat.tailf45616.ts.net`, pero solo estará disponible después de
 añadir su comando `tailscale serve` en la Pi.
 
+Nginx Proxy Manager comparte la red Docker `music-network` con Navidrome y
+Musikat. Su panel local está en `http://192.168.0.9:8181`; el proxy HTTP y
+HTTPS se publican inicialmente en `http://192.168.0.9:8084` y
+`https://192.168.0.9:8444`, porque Pi-hole conserva el puerto 80. El panel de
+administración no debe exponerse externamente sin protección adicional.
+
 ```
 https://jellyfin.tailf45616.ts.net
 https://sonarr.tailf45616.ts.net

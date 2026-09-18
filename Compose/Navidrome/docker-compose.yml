@@ -1,3 +1,5 @@
+name: navidrome
+
 services:
   navidrome:
     image: deluan/navidrome:latest
@@ -26,3 +28,10 @@ services:
         max-size: 10m
         max-file: 3
     restart: unless-stopped
+    networks:
+      - music-network
+
+networks:
+  music-network:
+    name: ${MUSIC_NETWORK}
+    external: true

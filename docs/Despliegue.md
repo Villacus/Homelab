@@ -59,7 +59,7 @@ MUSIKAT_DOWNLOADS_PATH=/home/villacus/musikat/downloads
 MUSIKAT_MUSIC_PATH=/mnt/nasdisk/privada/Musica
 MUSIKAT_ITZIAR_MUSIC_PATH=/mnt/nasdisk/compartida/Musica
 MUSIKAT_JONPA_MUSIC_PATH=/mnt/nasdisk/privada/Musica_jon
-NAVIDROME_API_URL=http://host.docker.internal:4533
+NAVIDROME_API_URL=http://navidrome:4533
 NAVIDROME_SYNC_ENABLED=false
 DOWNLOAD_DIR=/app/downloads
 DEFAULT_METADATA_PROVIDER=deezer
@@ -72,10 +72,10 @@ para cambiar los destinos visibles usa las variables plurales anteriores.
 
 ### Navidrome y sincronización
 
-`NAVIDROME_API_URL` debe apuntar al Navidrome publicado por el host
-(`http://host.docker.internal:4533`), no a `localhost` dentro del contenedor.
-El compose añade `host.docker.internal` mediante `host-gateway` para que el
-contenedor pueda alcanzar ese puerto del host.
+`NAVIDROME_API_URL` usa el DNS de la red Docker compartida
+(`http://navidrome:4533`), no `localhost` ni el puerto publicado del host.
+Navidrome y Musikat deben estar conectados a `music-network` para que ese
+nombre se resuelva desde el contenedor.
 
 Si se desea que Musikat ejecute su sincronización periódica, configura en
 Arcane `NAVIDROME_USERNAME` y `NAVIDROME_PASSWORD` y activa
@@ -92,16 +92,63 @@ como variables protegidas del proyecto en Arcane. Si alguna credencial real
 ha quedado en un archivo versionado, retírala y rótala antes de publicar los
 cambios.
 
+## Red compartida y Nginx Proxy Manager
+
+Navidrome, Musikat y Nginx Proxy Manager comparten la red externa
+`music-network`. Créala una sola vez en la Pi antes de desplegar los stacks:
+
+```bash
+ssh pilla "docker network inspect music-network >/dev/null 2>&1 || docker network create --driver bridge music-network"
+ssh pilla "docker network inspect music-network"
+```
+
+Los tres `.env` deben conservar `MUSIC_NETWORK=music-network`. Comprueba la
+red en la Pi con `docker network inspect music-network`; Compose no la crea ni
+la elimina porque está declarada como `external: true`.
+
+Crea los directorios persistentes de Nginx Proxy Manager y despliega en este
+orden:
+
+```bash
+ssh pilla "mkdir -p /home/villacus/nginx/data /home/villacus/nginx/letsencrypt"
+ssh pilla "docker compose --env-file /home/villacus/Homelab/Compose/Navidrome/.env -f /home/villacus/Homelab/Compose/Navidrome/docker-compose.yml up -d"
+ssh pilla "docker compose --env-file /home/villacus/Homelab/Compose/Musikat/.env -f /home/villacus/Homelab/Compose/Musikat/docker-compose.yml up -d"
+ssh pilla "docker compose --env-file /home/villacus/Homelab/Compose/Nginx/.env -f /home/villacus/Homelab/Compose/Nginx/docker-compose.yml up -d"
+```
+
+Nginx publica puertos alternativos porque Pi-hole conserva el puerto 80:
+
+| Uso | Host | Contenedor |
+|---|---:|---:|
+| Proxy HTTP | 8084 | 80 |
+| Proxy HTTPS | 8444 | 443 |
+| Panel de administración | 8181 | 81 |
+
+En la interfaz de Nginx Proxy Manager (`http://192.168.0.9:8181`) crea los
+Proxy Hosts con estos destinos internos, que solo funcionan cuando los tres
+contenedores están en `music-network`:
+
+- Navidrome: `http://navidrome:4533`
+- Musikat: `http://musikat:8000`
+
+El panel administrativo no debe exponerse por Tailscale sin controles de
+acceso adicionales. La exposición remota del proxy debe apuntar al puerto de
+host elegido (8084 o 8444), no al puerto interno 443. Los puertos publicados
+de Navidrome y Musikat se mantienen durante esta transición para no romper el
+acceso directo existente; su cierre queda para una fase posterior.
+
 ### Redeploy automático
 
 El workflow `.github/workflows/deploy-arcane.yml` detecta cambios en
-`Compose/Musikat/**`. Para habilitar el redeploy automático:
+`Compose/Musikat/**` y `Compose/Nginx/**`. Para habilitar el redeploy
+automático:
 
-1. Crea en Arcane el webhook de redeploy del stack `musikat` y copia su URL.
-2. En GitHub, abre `Settings → Secrets and variables → Actions` y crea el
-   secreto `WEBHOOK_MUSIKAT` con esa URL.
+1. Crea en Arcane los webhooks de redeploy de los stacks `musikat` y `nginx` y
+   copia sus URLs.
+2. En GitHub, abre `Settings → Secrets and variables → Actions` y crea los
+   secretos `WEBHOOK_MUSIKAT` y `WEBHOOK_NGINX` con esas URLs.
 3. Comprueba que `TAILSCALE_AUTHKEY` también está configurado, porque el
-   runner entra en la Tailnet antes de enviar el webhook.
+   runner entra en la Tailnet antes de enviar los webhooks.
 
 El webhook y sus URLs son configuración externa y no deben escribirse en el
 repositorio.

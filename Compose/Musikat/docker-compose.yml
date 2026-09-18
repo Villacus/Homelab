@@ -45,7 +45,7 @@ services:
       NAVIDROME_MUSIC_PATH: /music/jonpa
       NAVIDROME_MUSIC_PATHS: ${NAVIDROME_MUSIC_PATHS:-/music/main,/music/itziar,/music/jonpa}
       NAVIDROME_MUSIC_LABELS: ${NAVIDROME_MUSIC_LABELS:-Musica,Itziar,Jonpa}
-      NAVIDROME_API_URL: ${NAVIDROME_API_URL:-http://host.docker.internal:4533}
+      NAVIDROME_API_URL: ${NAVIDROME_API_URL:-http://navidrome:4533}
       NAVIDROME_USERNAME: ${NAVIDROME_USERNAME:-}
       NAVIDROME_PASSWORD: ${NAVIDROME_PASSWORD:-}
       NAVIDROME_SYNC_ENABLED: ${NAVIDROME_SYNC_ENABLED:-false}
@@ -64,8 +64,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 20s
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
     networks:
       - music-network
     logging:
@@ -76,4 +74,5 @@ services:
 
 networks:
   music-network:
-    driver: bridge
+    name: ${MUSIC_NETWORK}
+    external: true

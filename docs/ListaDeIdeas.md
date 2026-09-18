@@ -33,9 +33,11 @@ Lista de proyectos técnicos para enriquecer conocimientos en administración de
 ## 🔒 3. Seguridad, Gestión de Tráfico y Redes Internas
 *Conceptos clave: Reverse Proxy, Capa de Transporte (TLS), DNS Interception.*
 
-- [ ] **Migración a Reverse Proxy local (Traefik o Nginx Proxy Manager):**
-  - En lugar de usar el comando de Tailscale para cada servicio, montar un Proxy Inverso centralizado en Docker.
-  - *Objetivo:* Aprender a gestionar certificados SSL (Let's Encrypt) mediante el **DNS Challenge** (con la API de Cloudflare, DuckDNS, etc.) para que todo tu laboratorio use HTTPS nativo internamente sin que los servicios estén expuestos a internet.
+- [x] **Base del reverse proxy local (Nginx Proxy Manager):**
+  - Nginx Proxy Manager está preparado en `Compose/Nginx/` y comparte `music-network` con Navidrome y Musikat.
+  - *Completado:* El proxy dispone de persistencia y puertos alternativos porque Pi-hole conserva el puerto 80.
+  - [ ] Configurar los Proxy Hosts, certificados y el acceso remoto en Tailscale.
+  - *Objetivo:* Gestionar certificados SSL (Let's Encrypt) mediante el **DNS Challenge** (con la API de Cloudflare, DuckDNS, etc.) sin exponer directamente todos los servicios.
 
 - [ ] **Cierre de puertos expuestos de forma innecesaria:**
   - Modificar los Compose para que dejen de mapear los puertos a la IP de la Pi (`0.0.0.0:XXXX->XXXX`). Solo el Reverse Proxy debería exponer puertos al host.

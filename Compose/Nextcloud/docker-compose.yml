@@ -19,7 +19,7 @@ services:
       options:
         max-size: 10m
         max-file: 3
-    restart: always
+    restart: unless-stopped
 
 
   redis:
@@ -35,7 +35,7 @@ services:
       options:
         max-size: 10m
         max-file: 3
-    restart: always
+    restart: unless-stopped
 
   app:
     image: nextcloud:33.0.5-apache
@@ -71,7 +71,7 @@ services:
       options:
         max-size: 10m
         max-file: 3
-    restart: always
+    restart: unless-stopped
 
 
   cron:
@@ -92,4 +92,4 @@ services:
       options:
         max-size: 10m
         max-file: 3
-    restart: always
+    restart: unless-stopped
