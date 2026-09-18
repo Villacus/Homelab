@@ -7,6 +7,16 @@ services:
       context: https://github.com/soggy8/musikat.git#main
       dockerfile: Dockerfile
     container_name: musikat
+    command:
+      - uvicorn
+      - app:app
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8000"
+      - --proxy-headers
+      - --forwarded-allow-ips
+      - "${FORWARDED_ALLOW_IPS:-*}"
     deploy:
       resources:
         limits:
@@ -46,9 +56,8 @@ services:
       OUTPUT_FORMAT: ${OUTPUT_FORMAT:-mp3}
       AUDIO_QUALITY: ${AUDIO_QUALITY:-128}
       TEMP_FILE_CLEANUP_DELAY_SEC: ${TEMP_FILE_CLEANUP_DELAY_SEC:-60}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8010,http://127.0.0.1:8010,http://192.168.0.9:8010}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://musikat.tailf45616.ts.net,http://localhost:8010,http://127.0.0.1:8010,http://192.168.0.9:8010}
     user: ${PUID:-1000}:${PGID:-1000}
-    CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8010,http://127.0.0.1:8010,http://192.168.0.9:8010,https://musikat.tailf45616.ts.net}
     healthcheck:
       test: ['CMD', 'python', '-c', 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8000/api/health")']
       interval: 30s
