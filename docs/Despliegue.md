@@ -137,6 +137,92 @@ host elegido (8084 o 8444), no al puerto interno 443. Los puertos publicados
 de Navidrome y Musikat se mantienen durante esta transición para no romper el
 acceso directo existente; su cierre queda para una fase posterior.
 
+### Funnel público y rutas protegidas
+
+La exposición pública prevista utiliza un único Funnel para
+`https://pilla.tailf45616.ts.net` y conserva los `tailscale serve` existentes de
+los demás servicios. No se debe ejecutar el Funnel hasta terminar la
+configuración del Proxy Host y su Access List: Funnel es público y, sin la ACL,
+publicaría la respuesta predeterminada de Nginx Proxy Manager.
+
+La configuración persistente de Proxy Hosts, Access Lists y certificados se
+realiza en la interfaz de Nginx Proxy Manager y permanece en
+`/home/villacus/nginx/data`; no se exporta al repositorio ni se guardan aquí
+contraseñas. Desde `http://192.168.0.9:8181`:
+
+1. Cambia la contraseña inicial de la cuenta administradora y activa una
+   contraseña larga y única para la Access List. No reutilices la contraseña
+   del administrador.
+2. Crea una Access List de tipo autenticación HTTP, con un usuario dedicado al
+   acceso remoto. No añadas reglas `allow all` ni publiques el panel `:8181`.
+3. Crea un único Proxy Host para `pilla.tailf45616.ts.net`. Como el Proxy Host
+   exige un destino base aunque el tráfico útil vaya por Custom Locations, usa
+   `127.0.0.1` como **Forward Hostname / IP** y `9` como **Forward Port**. Así
+   una petición a `/` termina en un puerto local no utilizado y no muestra el
+   panel ni un servicio. Activa **Block Common Exploits**, **Websocket Support**
+   y asocia la Access List. El Funnel puede entregar HTTP al puerto `8084`; no
+   apuntes el Funnel al panel `8181`.
+4. En ese Proxy Host añade las Custom Locations `/navidrome/` y `/musikat/`.
+   La interfaz separa el host y el puerto: para eliminar el prefijo, termina
+   el valor del **Forward Hostname / IP** en `/`:
+
+   | Ruta | Forward Hostname / IP | Forward Port |
+   |---|---|---:|
+   | `/navidrome/` | `navidrome/` | `4533` |
+   | `/musikat/` | `musikat/` | `8000` |
+
+   El valor debe empezar por el nombre del servicio, **sin `/` inicial**. La
+   barra va únicamente al final: `navidrome/` y `musikat/`. Usa los puertos
+   internos `4533` y `8000`, no los puertos publicados del host (`4533` y
+   `8010`). NPM generará `proxy_pass http://navidrome:4533/` y
+   `proxy_pass http://musikat:8000/`; la barra final hace que Nginx elimine el
+   prefijo antes de reenviar la petición. En la configuración avanzada de cada
+   ubicación añade únicamente su prefijo correspondiente:
+
+   ```nginx
+   proxy_set_header X-Forwarded-Prefix /navidrome;
+   ```
+
+   ```nginx
+   proxy_set_header X-Forwarded-Prefix /musikat;
+   ```
+
+   Las cabeceras `Host`, `X-Forwarded-Proto`, `X-Forwarded-For` y
+   `X-Real-IP` ya las genera Nginx Proxy Manager. La Access List asociada al
+   Proxy Host protege también ambas Custom Locations.
+5. Navidrome debe tener `ND_BASEURL=/navidrome` (sin barra final) para que su
+   redirección inicial sea `/navidrome/app/` en lugar de `/app/`. Esta variable
+   está en `Compose/Navidrome/.env` y se inyecta desde el Compose; no pongas la
+   URL completa ni una barra final. Musikat debe conservar su puerto local
+   `http://192.168.0.9:8010`.
+6. Después de cambiar `ND_BASEURL`, recrea Navidrome y comprueba el acceso
+   directo local `http://192.168.0.9:4533` y el Serve
+   `https://navidrome.tailf45616.ts.net`. El acceso directo puede mostrar ahora
+   enlaces bajo `/navidrome/`, porque Navidrome tiene un único BaseURL global;
+   si necesitas que el acceso local funcione en la raíz y el Funnel bajo un
+   prefijo simultáneamente, habrá que separar los Proxy Hosts o usar un host
+   público dedicado. No cambies el valor sin probar ambos accesos.
+
+Después de comprobar que el Proxy Host responde y que la ACL exige credenciales,
+configura en la Pi el Funnel hacia el HTTP de Nginx. En este host el estado
+actual de Tailscale contiene únicamente `serve` y no hay todavía un Funnel
+activo; conserva una copia de ambos estados antes de aplicar el cambio:
+
+```bash
+ssh pilla "tailscale serve status > /tmp/serve-antes.txt"
+ssh pilla "tailscale funnel status --json > /tmp/funnel-antes.json"
+ssh pilla "tailscale funnel --bg 8084"
+ssh pilla "tailscale funnel status"
+```
+
+Compara entonces `tailscale serve status` con la copia anterior: el cambio no
+debe eliminar ni reemplazar las entradas Serve existentes. Si la versión
+instalada muestra una colisión de listeners, detén el cambio y ejecuta
+`ssh pilla "tailscale funnel reset"` para volver al estado sin Funnel. Comprueba
+desde una red externa que una petición sin credenciales a `/navidrome/` y
+`/musikat/` recibe `401`, que una petición autenticada funciona, que `/` no
+muestra el panel y que `:8181` no aparece en el Funnel.
+
 ### Redeploy automático
 
 El workflow `.github/workflows/deploy-arcane.yml` detecta cambios en

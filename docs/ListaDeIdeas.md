@@ -36,7 +36,9 @@ Lista de proyectos técnicos para enriquecer conocimientos en administración de
 - [x] **Base del reverse proxy local (Nginx Proxy Manager):**
   - Nginx Proxy Manager está preparado en `Compose/Nginx/` y comparte `music-network` con Navidrome y Musikat.
   - *Completado:* El proxy dispone de persistencia y puertos alternativos porque Pi-hole conserva el puerto 80.
-  - [ ] Configurar los Proxy Hosts, certificados y el acceso remoto en Tailscale.
+  - [ ] Configurar el Proxy Host unificado, la Access List y el acceso público mediante Tailscale Funnel en `pilla.tailf45616.ts.net`.
+  - [ ] Validar desde una red externa las rutas `/navidrome/` y `/musikat/`, y decidir si se necesita `ND_BASEURL` sin romper el acceso directo local.
+  - *Estado actual:* Nginx Proxy Manager, Navidrome y Musikat están levantados en `music-network`, pero todavía no hay Proxy Host ni Access List configurados; el Funnel aún no se ha activado.
   - *Objetivo:* Gestionar certificados SSL (Let's Encrypt) mediante el **DNS Challenge** (con la API de Cloudflare, DuckDNS, etc.) sin exponer directamente todos los servicios.
 
 - [ ] **Cierre de puertos expuestos de forma innecesaria:**

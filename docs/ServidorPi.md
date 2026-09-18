@@ -19,16 +19,24 @@ Para gestionar la exposición de nuevos servicios, consulta el flujo de trabajo 
 
 ### Lista de Servicios Expuestos
 
-Musikat también está disponible localmente en `http://192.168.0.9:8010`.
-La URL Tailscale prevista para Musikat es
-`https://musikat.tailf45616.ts.net`, pero solo estará disponible después de
-añadir su comando `tailscale serve` en la Pi.
+Musikat está disponible localmente en `http://192.168.0.9:8010` y actualmente
+se publica dentro de la Tailnet en `https://musikat.tailf45616.ts.net` mediante
+Tailscale Serve. Esta entrada se conserva al configurar el Funnel unificado.
 
 Nginx Proxy Manager comparte la red Docker `music-network` con Navidrome y
 Musikat. Su panel local está en `http://192.168.0.9:8181`; el proxy HTTP y
 HTTPS se publican inicialmente en `http://192.168.0.9:8084` y
 `https://192.168.0.9:8444`, porque Pi-hole conserva el puerto 80. El panel de
 administración no debe exponerse externamente sin protección adicional.
+
+El acceso público unificado previsto es
+`https://pilla.tailf45616.ts.net/navidrome/` y
+`https://pilla.tailf45616.ts.net/musikat/`, a través de un único Tailscale
+Funnel hacia el puerto `8084`. Ambas rutas deben estar protegidas por la misma
+Access List de Nginx Proxy Manager. Se conservan los accesos locales
+`http://192.168.0.9:4533` y `http://192.168.0.9:8010`, además de los `serve`
+existentes; no publiques el panel `:8181` por Funnel. El procedimiento y las
+pruebas están en [[Despliegue]].
 
 ```
 https://jellyfin.tailf45616.ts.net
