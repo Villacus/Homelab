@@ -21,7 +21,6 @@ services:
         max-file: 3
     restart: unless-stopped
 
-
   redis:
     image: redis:alpine
     container_name: nextcloud_redis
@@ -55,6 +54,8 @@ services:
       - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
       - NEXTCLOUD_TRUSTED_DOMAINS=192.168.0.9 nextcloud.tailf45616.ts.net pilla.tailf45616.ts.net
       - OVERWRITEPROTOCOL=https
+      - OVERWRITEWEBROOT=/nextcloud
+      - OVERWRITECLIURL=https://pilla.tailf45616.ts.net/nextcloud
       - PHP_UPLOAD_LIMIT=2G
       - PHP_MEMORY_LIMIT=512M
     volumes:
@@ -72,7 +73,9 @@ services:
         max-size: 10m
         max-file: 3
     restart: unless-stopped
-
+    networks:
+      - default
+      - music-network
 
   cron:
     image: nextcloud:33.0.5-apache
@@ -93,3 +96,8 @@ services:
         max-size: 10m
         max-file: 3
     restart: unless-stopped
+
+networks:
+  music-network:
+    name: music-network
+    external: true
