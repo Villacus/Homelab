@@ -43,7 +43,7 @@ services:
       resources:
         limits:
           cpus: '1.0'
-          memory: 512M
+          memory: 1G
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_DB=${NC_DB_NAME}
@@ -55,7 +55,6 @@ services:
       - NEXTCLOUD_TRUSTED_DOMAINS=192.168.0.9 nextcloud.tailf45616.ts.net pilla.tailf45616.ts.net
       - OVERWRITEPROTOCOL=https
       - OVERWRITEWEBROOT=/nextcloud
-      - OVERWRITECLIURL=https://pilla.tailf45616.ts.net/nextcloud
       - PHP_UPLOAD_LIMIT=2G
       - PHP_MEMORY_LIMIT=512M
     volumes:
