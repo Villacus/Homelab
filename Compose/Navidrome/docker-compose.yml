@@ -13,6 +13,7 @@ services:
       - TZ=${TZ}
       - NMUSICFOLDER=/music
       - DATAFOLDER=/data
+      - ND_BASEURL=${ND_BASEURL}
     ports:
       - "${NAVIDROME_PORT}:4533"
     stop_grace_period: 30s
