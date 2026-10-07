@@ -8,7 +8,7 @@ Este documento resume las especificaciones técnicas, la configuración básica 
 - **IP Local**: `192.168.0.9`
 - **Tailscale**: [pilla.tailf45616.ts.net](https://tailscale.com/)
 - **NAS**: Montado en `/mnt/nasdisk` (USB, ext4, ~916GB)
-- **Gestión**: Docker Compose manual
+- **Gestión**: Docker Compose manual y Arcane
 - **Acceso SSH**: `villacus@pilla`
 
 ## Acceso remoto

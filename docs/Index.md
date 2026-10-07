@@ -7,7 +7,7 @@ Este repositorio centraliza la documentación, configuración y gestión del ent
 - [[Estructura]] — Organización de archivos y directorios del proyecto.
 - [[Convenciones]] — Estándares de configuración para Docker y variables de entorno.
 - [[Servicios]] — Catálogo de aplicaciones, asignación de puertos y límites de recursos.
-- [[ServidorPi]] — Especificaciones técnicas del hardware y conectividad del host.
+- [[00 - ServidorPi]] — Especificaciones técnicas del hardware y conectividad del host.
 - [[Despliegue]] — Flujo de trabajo paso a paso para desplegar y actualizar servicios.
 
 ## Notas y Planificación
