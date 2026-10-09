@@ -8,89 +8,25 @@ Este documento detalla el flujo de trabajo estándar para desplegar nuevos servi
 - [Tailscale](https://tailscale.com/kb/) instalado para conectividad segura.
 - [Glance](https://glance.nhat.dev/) configurado para el dashboard de monitorización.
 
-## Musikat
+## Guías específicas
 
-Musikat se despliega desde el stack `Compose/Musikat/` usando el contexto de
-build oficial de [`soggy8/musikat`](https://github.com/soggy8/musikat), rama
-`main`: `https://github.com/soggy8/musikat.git#main`. Arcane debe tener
-BuildKit habilitado para poder clonar el contexto Git remoto. El servicio
-publica `http://192.168.0.9:8010` (puerto 8010 del host y 8000 dentro del
-contenedor) y su healthcheck interno consulta `/api/health`.
+- [[Musikat]] — requisitos del stack musical, NAS, Navidrome y BuildKit.
+- [[Glance]] — edición del dashboard que vive en la Pi.
 
-Antes de desplegar, comprueba en la Pi que el NAS está montado en
-`/mnt/nasdisk` y crea el directorio para los temporales de descarga:
+## Documentación obligatoria
 
-```text
-/home/villacus/musikat/downloads
-```
+Cualquier cambio operativo, servicio, configuración, script, integración o
+procedimiento que se cree o modifique y que necesite explicación debe quedar
+documentado en este sistema de `docs/`. Crea o actualiza el documento
+correspondiente, enlázalo mediante `[[wikilink]]` desde [[000 - Index]] y añade
+enlaces cruzados desde las guías relacionadas. No dejes instrucciones
+importantes únicamente en commits, chats, archivos de configuración o memoria
+personal.
 
-Antes de arrancar, verifica que existen las tres rutas del NAS y el directorio
-temporal, que el NAS sigue montado y que UID/GID `1000:1000` puede escribir en
-ellos. Si el NAS no está montado, Docker podría crear directorios vacíos en el
-punto de montaje equivocado. El contenedor se ejecuta con UID/GID `1000:1000`;
-las tres carpetas musicales deben ser accesibles por ese usuario. Musikat
-necesita montar las carpetas musicales en `rw` para guardar descargas; el
-stack de Navidrome las monta en `ro` para indexarlas.
-
-### Destinos de descarga
-
-La interfaz de Musikat ofrece estos destinos, definidos en
-`Compose/Musikat/.env` mediante `NAVIDROME_MUSIC_PATHS` y
-`NAVIDROME_MUSIC_LABELS`:
-
-| Destino | Ruta del host | Ruta dentro de Musikat |
-|---|---|---|
-| Musica | `/mnt/nasdisk/privada/Musica` | `/music/main` |
-| Itziar | `/mnt/nasdisk/compartida/Musica` | `/music/itziar` |
-| Jonpa | `/mnt/nasdisk/privada/Musica_jon` | `/music/jonpa` |
-
-`DOWNLOAD_DIR=/app/downloads` es solo el staging temporal del contenedor; el
-volumen persistente correspondiente es
-`/home/villacus/musikat/downloads:/app/downloads`.
-
-### Variables de Arcane
-
-Los valores no sensibles del stack pueden configurarse en el `.env` del
-proyecto o en Arcane:
-
-```text
-MUSIKAT_PORT=8010
-MUSIKAT_DOWNLOADS_PATH=/home/villacus/musikat/downloads
-MUSIKAT_MUSIC_PATH=/mnt/nasdisk/privada/Musica
-MUSIKAT_ITZIAR_MUSIC_PATH=/mnt/nasdisk/compartida/Musica
-MUSIKAT_JONPA_MUSIC_PATH=/mnt/nasdisk/privada/Musica_jon
-NAVIDROME_API_URL=http://navidrome:4533
-NAVIDROME_SYNC_ENABLED=false
-DOWNLOAD_DIR=/app/downloads
-DEFAULT_METADATA_PROVIDER=deezer
-```
-
-`NAVIDROME_MUSIC_PATHS` y `NAVIDROME_MUSIC_LABELS` deben conservar el mismo
-orden: cada ruta interna se muestra con su etiqueta correspondiente. El
-compose fija `NAVIDROME_MUSIC_PATH=/music/jonpa` como ruta predeterminada;
-para cambiar los destinos visibles usa las variables plurales anteriores.
-
-### Navidrome y sincronización
-
-`NAVIDROME_API_URL` usa el DNS de la red Docker compartida
-(`http://navidrome:4533`), no `localhost` ni el puerto publicado del host.
-Navidrome y Musikat deben estar conectados a `music-network` para que ese
-nombre se resuelva desde el contenedor.
-
-Si se desea que Musikat ejecute su sincronización periódica, configura en
-Arcane `NAVIDROME_USERNAME` y `NAVIDROME_PASSWORD` y activa
-`NAVIDROME_SYNC_ENABLED=true`. La sincronización de Musikat es la
-comunicación con la API de Navidrome; no sustituye el escaneo/indexado de la
-biblioteca de Navidrome. Las bibliotecas adicionales se gestionan en
-Navidrome desde `Settings → Libraries`, usando sus rutas internas
-(`/music`, `/itziar_music` y `/jonpa_music`). No intentes configurar varias
-raíces de Navidrome como una única lista separada por comas; cada biblioteca
-se añade por separado.
-
-No guardes las credenciales en Git ni en un `.env` versionado: introdúcelas
-como variables protegidas del proyecto en Arcane. Si alguna credencial real
-ha quedado en un archivo versionado, retírala y rótala antes de publicar los
-cambios.
+Los documentos nuevos deben seguir las convenciones de la vault: nombres
+PascalCase, ubicación dentro de `docs/`, navegación mediante wikilinks y sin
+secretos ni credenciales reales. Si el cambio afecta al despliegue, actualiza
+también esta guía o enlaza desde ella el procedimiento específico.
 
 ## Red compartida y Nginx Proxy Manager
 
@@ -225,33 +161,80 @@ muestra el panel y que `:8181` no aparece en el Funnel.
 
 ### Redeploy automático
 
-El workflow `.github/workflows/deploy-arcane.yml` detecta cambios en
-`Compose/Musikat/**` y `Compose/Nginx/**`. Para habilitar el redeploy
-automático:
+El workflow `.github/workflows/deploy-arcane.yml` se ejecuta cuando hay un
+`push` a `main` con cambios bajo `Compose/**`. Detecta qué stacks cambiaron y,
+si están configurados los secretos necesarios, el runner entra en la Tailnet
+con `TAILSCALE_AUTHKEY` y hace `POST` al webhook correspondiente de Arcane.
+Arcane vuelve a desplegar ese stack.
 
-1. Crea en Arcane los webhooks de redeploy de los stacks `musikat` y `nginx` y
-   copia sus URLs.
-2. En GitHub, abre `Settings → Secrets and variables → Actions` y crea los
-   secretos `WEBHOOK_MUSIKAT` y `WEBHOOK_NGINX` con esas URLs.
-3. Comprueba que `TAILSCALE_AUTHKEY` también está configurado, porque el
-   runner entra en la Tailnet antes de enviar los webhooks.
+El workflow contempla actualmente estos secretos de webhook:
 
-El webhook y sus URLs son configuración externa y no deben escribirse en el
-repositorio.
+```text
+WEBHOOK_GLANCE
+WEBHOOK_IMMICH
+WEBHOOK_JELLYFIN_ARR
+WEBHOOK_NAVIDROME
+WEBHOOK_NEXTCLOUD
+WEBHOOK_PAPERLESS_NGX
+WEBHOOK_PIHOLE
+WEBHOOK_SAMBA
+WEBHOOK_SPEEDTEST
+WEBHOOK_VAULTWARDEN
+WEBHOOK_MUSIKAT
+WEBHOOK_NGINX
+```
 
-## Flujo de Trabajo
-1. **Preparación del Stack**: Crear o editar el archivo `docker-compose.yml` y el archivo de variables en `Compose/<StackName>/`. No versionar credenciales: usa un `.env.example` sin secretos y configura el `.env` real en el gestor del stack (Arcane, en el caso de Musikat).
-2. **Preparación de Directorios**: Crear las carpetas de configuración necesarias en la Pi utilizando SSH:
-   `ssh pilla "mkdir -p /home/villacus/<service>/config"`
-3. **Sincronización**: Revisar que no haya secretos en los archivos antes de enviar los cambios al repositorio:
-   `git add . && git commit -m "feat: ..." && git push`
-4. **Despliegue**: Ejecutar el despliegue en la Pi:
-   `ssh pilla "docker compose -f /home/villacus/Homelab/Compose/<StackName>/docker-compose.yml up -d"`
-5. **Exposición (Tailscale)**: Si el servicio debe ser accesible externamente, configurar el túnel:
-   - Añadir la siguiente línea al script `/home/villacus/tailscale`:
-     ```bash
-     tailscale serve --bg --https 443 --service=svc:<nombre> 127.0.0.1:<puerto>
-     ```
-   - Ejecutar el comando en la Pi.
-   - Aprobar el nuevo túnel en el panel de administración de Tailscale.
-6. **Monitorización**: Actualizar el dashboard de Glance si es un servicio nuevo.
+Para cada stack que se quiera actualizar automáticamente:
+
+1. Crea o importa el stack en Arcane y confirma que sus rutas, red y variables
+   son correctas.
+2. Crea en Arcane su webhook de redeploy y copia la URL sin publicarla.
+3. En GitHub, abre `Settings → Secrets and variables → Actions` y guarda la
+   URL como `WEBHOOK_<STACK>` usando exactamente el nombre del workflow.
+4. Configura también `TAILSCALE_AUTHKEY`.
+5. Haz un cambio controlado bajo `Compose/<Stack>/`, súbelo a `main` y verifica
+   la ejecución del workflow y el estado del stack en Arcane.
+
+El workflow no incluye actualmente Arcane, Komodo, Homepage ni OmniRoute. Un
+cambio en esos stacks no activa un redeploy mediante este flujo. Los webhooks,
+las claves y las credenciales son configuración externa: nunca deben escribirse
+en Git ni en esta vault.
+
+## Primer despliegue
+
+El primer deploy no se realiza automáticamente solo por hacer `push`. Antes de
+que exista la configuración de Arcane y GitHub Actions, el administrador debe:
+
+1. Preparar `docker-compose.yml` y las variables en `Compose/<Stack>/`. No
+   versionar credenciales; usa un `.env.example` sin secretos y configura el
+   `.env` real en Arcane o en el gestor que corresponda.
+2. Crear en la Pi las rutas persistentes necesarias:
+   `ssh pilla "mkdir -p /home/villacus/<service>/config"`.
+3. Crear o importar el stack en Arcane y ejecutar manualmente el primer deploy.
+   Si Arcane todavía no gestiona ese stack, puede hacerse por SSH:
+   `ssh pilla "docker compose --env-file /home/villacus/Homelab/Compose/<Stack>/.env -f /home/villacus/Homelab/Compose/<Stack>/docker-compose.yml up -d"`.
+4. Verificar contenedores, logs, healthchecks, volúmenes y conectividad antes
+   de dar el servicio por publicado.
+5. Configurar el webhook de Arcane y los secretos de Actions según [[#Redeploy automático]].
+6. Si el servicio debe exponerse por Tailscale, añadir una línea al archivo
+   `/home/villacus/tailscale`, siguiendo [[Convenciones]]:
+   ```bash
+   tailscale serve --bg --https 443 --service=svc:<nombre> 127.0.0.1:<puerto>
+   ```
+   Ejecuta el comando en `pilla` y aprueba el nuevo túnel en el panel de
+   administración de Tailscale.
+7. Entrar por SSH en `pilla`, revisar la estructura existente de
+   `/home/villacus/glance/glance.yml` y añadir el servicio siguiendo [[Glance]].
+   Ese archivo vive fuera de este repositorio; no se debe inventar su formato.
+
+## Flujo de trabajo posterior
+
+Una vez configurado el primer deploy, el flujo normal es:
+
+1. Editar el Compose y las variables no sensibles del stack.
+2. Revisar que no haya secretos y hacer `git add`, commit y `git push` a `main`.
+3. Si el cambio está bajo `Compose/**` y el stack tiene sus secretos
+   configurados, GitHub Actions llama al webhook y Arcane hace el redeploy.
+4. Revisar la ejecución de Actions, el estado del stack y el servicio publicado.
+5. Actualizar manualmente Tailscale o Glance solo cuando cambie la exposición o
+   la presentación del servicio.

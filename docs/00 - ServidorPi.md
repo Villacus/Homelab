@@ -58,4 +58,4 @@ https://arcane.tailf45616.ts.net
 https://omniroute.tailf45616.ts.net
 ```
 
-El script encargado de gestionar estos túneles se encuentra en el host en: `/home/villacus/tailscale`.
+El script encargado de gestionar estos túneles se encuentra en el host en: `/home/villacus/tailscale` las lineas comentadas significa que ese servicio se encuentra detenido por algun motivo. Como por ejemplo dado el poco uso que se le da al grupo arr y jellyfin estos se han detenido y comentado en el archivo.
