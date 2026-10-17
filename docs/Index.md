@@ -15,7 +15,6 @@ explica esta obligación y el flujo para mantenerla.
 - [[Despliegue]] — Flujo de trabajo paso a paso para desplegar y actualizar servicios.
 - [[Musikat]] — Despliegue y mantenimiento del servicio musical.
 - [[Glance]] — Configuración externa y actualización del dashboard.
-- [[Obsidian]] — Despliegue y persistencia del editor de notas.
 - [[NebulaSync]] — Sincronización automática de bóvedas.
 - [[Respaldo]]
 

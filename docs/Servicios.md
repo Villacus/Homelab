@@ -11,8 +11,6 @@ Para obtener información detallada sobre cómo se configuran estos servicios, c
 | 3000   | Homepage                    | [Docs](https://gethomepage.dev/)                         |
 | 3001   | Uptime Kuma                 | [Docs](https://github.com/louislam/uptime-kuma)          |
 | 3002   | Speedtest                   | [Docs](https://github.com/librespeed/speedtest)          |
-| 3003   | Obsidian (HTTP)             | [Docs](https://docs.linuxserver.io/images/docker-obsidian/) |
-| 3004   | Obsidian (HTTPS)            | [Docs](https://docs.linuxserver.io/images/docker-obsidian/) |
 | 4533   | Navidrome                   | [Docs](https://www.navidrome.org/)                       |
 | 5335   | Unbound                     | [Docs](https://nlnetlabs.nl/projects/unbound/about/)     |
 | 6767   | Bazarr                      | [Docs](https://www.bazarr.media/)                        |

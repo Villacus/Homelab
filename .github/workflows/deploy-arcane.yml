@@ -24,11 +24,11 @@ jobs:
       vaultwarden: ${{ steps.filter.outputs.vaultwarden }}
       musikat: ${{ steps.filter.outputs.musikat }}
       nginx: ${{ steps.filter.outputs.nginx }}
-      obsidian: ${{ steps.filter.outputs.obsidian }}
+      nebulasync: ${{ steps.filter.outputs.nebulasync }}
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
-        
+
       - name: Detectar cambios por servicio
         uses: dorny/paths-filter@v3
         id: filter
@@ -58,15 +58,15 @@ jobs:
               - 'Compose/Musikat/**'
             nginx:
               - 'Compose/Nginx/**'
-            obsidian:
-              - 'Compose/Obsidian/**'
+            nebulasync:
+              - 'Compose/NebulaSync/**'
 
   # Trabajo 2: Entrar a la Tailnet y lanzar webhooks
   trigger-webhooks:
     needs: detect-changes
     runs-on: ubuntu-latest
     steps:
-      
+
       - name: Conectar a la Tailnet
         uses: tailscale/github-action@v2
         with:
@@ -96,9 +96,9 @@ jobs:
         if: needs.detect-changes.outputs.nginx == 'true'
         run: curl -X POST "${{ secrets.WEBHOOK_NGINX }}"
 
-      - name: Actualizar Obsidian
-        if: needs.detect-changes.outputs.obsidian == 'true'
-        run: curl -X POST "${{ secrets.WEBHOOK_OBSIDIAN }}"
+      - name: Actualizar NebulaSync
+        if: needs.detect-changes.outputs.nebulasync == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_NEBULASYNC }}"
 
       - name: Actualizar Nextcloud
         if: needs.detect-changes.outputs.nextcloud == 'true'

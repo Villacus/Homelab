@@ -11,11 +11,12 @@ explica esta obligación y el flujo para mantenerla.
 - [[Estructura]] — Organización de archivos y directorios del proyecto.
 - [[Convenciones]] — Estándares de configuración para Docker y variables de entorno.
 - [[Servicios]] — Catálogo de aplicaciones, asignación de puertos y límites de recursos.
-- [[ServidorPi]] — Especificaciones técnicas del hardware y conectividad del host.
+- [[00 - ServidorPi]] — Especificaciones técnicas del hardware y conectividad del host.
 - [[Despliegue]] — Flujo de trabajo paso a paso para desplegar y actualizar servicios.
 - [[Musikat]] — Despliegue y mantenimiento del servicio musical.
 - [[Glance]] — Configuración externa y actualización del dashboard.
-- [[Obsidian]] — Despliegue y persistencia del editor de notas.
+- [[NebulaSync]] — Sincronización automática de bóvedas.
+- [[Respaldo]]
 
 ## Notas y Planificación
 
