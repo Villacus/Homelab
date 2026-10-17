@@ -25,6 +25,7 @@ jobs:
       musikat: ${{ steps.filter.outputs.musikat }}
       nginx: ${{ steps.filter.outputs.nginx }}
       nebulasync: ${{ steps.filter.outputs.nebulasync }}
+      uptimekuma: ${{ steps.filter.outputs.uptimekuma }}
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
@@ -60,6 +61,8 @@ jobs:
               - 'Compose/Nginx/**'
             nebulasync:
               - 'Compose/NebulaSync/**'
+            uptimekuma:
+              - 'Compose/UptimeKuma/**'
 
   # Trabajo 2: Entrar a la Tailnet y lanzar webhooks
   trigger-webhooks:
@@ -99,6 +102,10 @@ jobs:
       - name: Actualizar NebulaSync
         if: needs.detect-changes.outputs.nebulasync == 'true'
         run: curl -X POST "${{ secrets.WEBHOOK_NEBULASYNC }}"
+
+      - name: Actualizar Uptime Kuma
+        if: needs.detect-changes.outputs.uptimekuma == 'true'
+        run: curl -X POST "${{ secrets.WEBHOOK_UPTIME_KUMA }}"
 
       - name: Actualizar Nextcloud
         if: needs.detect-changes.outputs.nextcloud == 'true'
