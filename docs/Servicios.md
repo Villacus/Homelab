@@ -37,6 +37,7 @@ Para obtener información detallada sobre cómo se configuran estos servicios, c
 | 3552   | Arcane                      | [Docs](https://getarcane.app/docs)                       |
 | 2283   | Immich                      | [Docs](https://immich.app/)                              |
 | 20128  | OmniRoute                   | [Repositorio](https://github.com/diegosouzapw/OmniRoute) |
+| 5555   | NebulaSync                  | -                                                        |
 
 ## Estrategia de Asignación de Recursos
 
