@@ -1,0 +1,32 @@
+name: satisfactory
+
+services:
+  satisfactory-server:
+    container_name: satisfactory-server
+    image: wolveix/satisfactory-server:latest
+    restart: unless-stopped
+    stop_grace_period: 30s
+    ports:
+      - "${SATISFACTORY_PORT}:7777/tcp"
+      - "${SATISFACTORY_PORT}:7777/udp"
+      - "${SATISFACTORY_WEB_PORT}:8888/tcp"
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - MAXPLAYERS=4
+      - STEAMBETA=false
+    volumes:
+      - ${SERVICE_CONFIG}:/config
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 8G
+        reservations:
+          memory: 4G
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
