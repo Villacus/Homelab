@@ -4,8 +4,8 @@ server:
   port: 8080
 
 branding:
-  app-name: VillaLab
-  logo-text: V
+  app-name: "VillaLab"
+  logo-text: "V"
 
 theme:
   background-color: 230 20 8
@@ -37,36 +37,23 @@ pages:
             cache: 10s
             url: http://172.17.0.1:8083/
             template: |
-              {{ if .JSON.Exists battery\.charge }}
-              {{  := .JSON.Int battery\.runtime }}
-              {{  := div  3600 }}
-              {{  := div (mod  3600) 60 }}
-              <div class=flex justify-between text-center>
+              {{ if .JSON.Exists "battery.charge" }}
+              <div class="flex justify-between text-center">
                 <div>
-                  <div class=color-highlight size-h3>{{ .JSON.Int battery\.charge }}%</div>
-                  <div class=size-h6>BATERÍA</div>
+                  <div class="color-highlight size-h3">{{ .JSON.Int "battery.charge" }}%</div>
+                  <div class="size-h6">BATERÍA</div>
                 </div>
                 <div>
-                  <div class=color-highlight size-h3>
-                    {{ if gt  0 }}{{  }}h {{ end }}{{  }}m
-                  </div>
-                  <div class=size-h6>AUTONOMÍA</div>
+                  <div class="color-highlight size-h3">{{ .JSON.Int "ups.load" }}%</div>
+                  <div class="size-h6">CARGA</div>
                 </div>
                 <div>
-                  <div class=color-highlight size-h3>{{ .JSON.Int ups\.load }}%</div>
-                  <div class=size-h6>CARGA</div>
-                </div>
-                <div>
-                  {{ if findMatch ^OL (.JSON.String ups\.status) }}
-                  <div class=color-positive size-h3>Red</div>
-                  {{ else }}
-                  <div class=color-negative size-h3>Batería</div>
-                  {{ end }}
-                  <div class=size-h6>ESTADO</div>
+                  <div class="color-positive size-h3">OK</div>
+                  <div class="size-h6">ESTADO</div>
                 </div>
               </div>
               {{ else }}
-              <p class=size-h4 color-negative>UPS no disponible</p>
+              <p class="size-h4 color-negative">UPS no disponible</p>
               {{ end }}
 
       # ---------------- COLUMNA CENTRAL (full) ----------------
@@ -114,6 +101,11 @@ pages:
                     icon: mdi:music-note
                     url: https://navidrome.tailf45616.ts.net
                     description: Servidor de música
+                  musikat:
+                    name: Musikat
+                    icon: mdi:music-box-multiple
+                    url: https://musikat.tailf45616.ts.net
+                    description: Descargas de música
                   immich_server:
                     name: Immich
                     icon: si:immich
@@ -184,11 +176,6 @@ pages:
                     icon: si:nginx
                     url: https://nginx.tailf45616.ts.net
                     description: proxy inverso
-                  musikat:
-                    name: Musikat
-                    icon: mdi:music-box-multiple
-                    url: https://musikat.tailf45616.ts.net
-                    description: Descargas de música
                   uptime-kuma:
                     name: Uptime Kuma
                     icon: si:uptimekuma
@@ -232,6 +219,9 @@ pages:
                   - title: Tailscale Admin
                     url: https://login.tailscale.com/admin/machines
                     icon: si:tailscale
+                  - title: Nginx
+                    url: https://nginx.tailf45616.ts.net
+                    icon: si:nginx
                   - title: Uptime Kuma
                     url: https://uptime.tailf45616.ts.net
                     icon: si:uptimekuma
@@ -248,15 +238,15 @@ pages:
                   - title: Navidrome
                     url: https://navidrome.tailf45616.ts.net
                     icon: mdi:music-note
+                  - title: Musikat
+                    url: https://musikat.tailf45616.ts.net
+                    icon: mdi:music-box-multiple
                   - title: Nextcloud
                     url: https://nextcloud.tailf45616.ts.net
                     icon: si:nextcloud
                   - title: Omniroute
                     url: https://omniroute.tailf45616.ts.net
                     icon: mdi:router-network
-                  - title: Musikat
-                    url: https://musikat.tailf45616.ts.net
-                    icon: mdi:music-box-multiple
 
               - title: ARR Stack
                 color: 270 60 55
