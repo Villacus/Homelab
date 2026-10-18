@@ -19,6 +19,7 @@ services:
     volumes:
       - ${SERVICE_CONFIG}/data:/satisfactory
       - ${SERVICE_CONFIG}/config:/home/steam/.config/Epic
+    entrypoint: /home/steam/init-server.sh
     deploy:
       resources:
         limits:
