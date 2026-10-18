@@ -3,26 +3,28 @@ name: satisfactory
 services:
   satisfactory-server:
     container_name: satisfactory-server
-    image: wolveix/satisfactory-server:latest
+    # Imagen específica para ARM64
+    image: ghcr.io/sa-shiro/satisfactory-server-arm64:latest
     restart: unless-stopped
     stop_grace_period: 30s
     ports:
-      - "${SATISFACTORY_PORT}:7777/tcp"
       - "${SATISFACTORY_PORT}:7777/udp"
+      - "${SATISFACTORY_PORT}:7777/tcp"
       - "${SATISFACTORY_WEB_PORT}:8888/tcp"
     environment:
       - TZ=${TZ}
       - PUID=${PUID}
       - PGID=${PGID}
-      - MAXPLAYERS=4
-      - STEAMBETA=false
+      - ALWAYS_UPDATE_ON_START=true
+      - EXTRA_PARAMS=-log -unattended -ini:Engine:[HTTPServer.Listeners]:DefaultBindAddress=any
     volumes:
-      - ${SERVICE_CONFIG}:/config
+      - ${SERVICE_CONFIG}/data:/satisfactory
+      - ${SERVICE_CONFIG}/config:/home/steam/.config/Epic
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 8G
+          cpus: '3.0'
+          memory: 16G
         reservations:
           memory: 4G
     logging:
