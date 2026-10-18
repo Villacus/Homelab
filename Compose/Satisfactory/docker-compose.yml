@@ -3,8 +3,7 @@ name: satisfactory
 services:
   satisfactory-server:
     container_name: satisfactory-server
-    # Imagen específica para ARM64
-    image: ghcr.io/sa-shiro/satisfactory-server-arm64:latest
+    build: ./build
     restart: unless-stopped
     stop_grace_period: 30s
     ports:
