@@ -1,0 +1,284 @@
+---
+
+server:
+  port: 8080
+
+branding:
+  app-name: VillaLab
+  logo-text: V
+
+theme:
+  background-color: 230 20 8
+  primary-color: 250 70 65
+  positive-color: 140 55 55
+  negative-color: 355 65 60
+  contrast-multiplier: 1.15
+
+pages:
+  - name: VillaLab
+    columns:
+
+      # ---------------- COLUMNA IZQUIERDA (small) ----------------
+      - size: small
+        widgets:
+          - type: search
+            search-engine: https://search.brave.com/search?q={QUERY}
+            new-tab: true
+            autofocus: true
+
+          - type: server-stats
+            title: Servidor VillaLab
+            servers:
+              - type: local
+                name: villacus
+
+          - type: custom-api
+            title: UPS MF-UPS650VA
+            cache: 10s
+            url: http://172.17.0.1:8083/
+            template: |
+              {{ if .JSON.Exists battery\.charge }}
+              {{  := .JSON.Int battery\.runtime }}
+              {{  := div  3600 }}
+              {{  := div (mod  3600) 60 }}
+              <div class=flex justify-between text-center>
+                <div>
+                  <div class=color-highlight size-h3>{{ .JSON.Int battery\.charge }}%</div>
+                  <div class=size-h6>BATERÍA</div>
+                </div>
+                <div>
+                  <div class=color-highlight size-h3>
+                    {{ if gt  0 }}{{  }}h {{ end }}{{  }}m
+                  </div>
+                  <div class=size-h6>AUTONOMÍA</div>
+                </div>
+                <div>
+                  <div class=color-highlight size-h3>{{ .JSON.Int ups\.load }}%</div>
+                  <div class=size-h6>CARGA</div>
+                </div>
+                <div>
+                  {{ if findMatch ^OL (.JSON.String ups\.status) }}
+                  <div class=color-positive size-h3>Red</div>
+                  {{ else }}
+                  <div class=color-negative size-h3>Batería</div>
+                  {{ end }}
+                  <div class=size-h6>ESTADO</div>
+                </div>
+              </div>
+              {{ else }}
+              <p class=size-h4 color-negative>UPS no disponible</p>
+              {{ end }}
+
+      # ---------------- COLUMNA CENTRAL (full) ----------------
+      - size: full
+        widgets:
+          - type: group
+            title: VillaLab
+            widgets:
+              - type: docker-containers
+                title: Contenedores
+                format-container-names: true
+                running-only: false
+                containers:
+                  homepage:
+                    name: Homepage
+                    icon: di:homepage
+                    hide: true
+                  speedtest:
+                    name: Speedtest
+                    icon: si:speedtest
+                    url: https://speedtest.tailf45616.ts.net
+                    description: Medidor de velocidad
+                  vaultwarden:
+                    name: Vaultwarden
+                    icon: si:vaultwarden
+                    url: https://vaultwarden.tailf45616.ts.net
+                    description: Gestor de contraseñas
+                  nextcloud_app:
+                    name: Nextcloud
+                    icon: si:nextcloud
+                    url: https://nextcloud.tailf45616.ts.net
+                    description: Nube personal
+                  nextcloud_cron:
+                    hide: true
+                  nextcloud_db:
+                    hide: true
+                  nextcloud_redis:
+                    hide: true
+                  samba:
+                    name: Samba
+                    icon: mdi:folder-network
+                    description: Compartición NAS
+                  navidrome:
+                    name: Navidrome
+                    icon: mdi:music-note
+                    url: https://navidrome.tailf45616.ts.net
+                    description: Servidor de música
+                  immich_server:
+                    name: Immich
+                    icon: si:immich
+                    url: https://immich.tailf45616.ts.net
+                    description: Fotos y vídeos
+                  immich_postgres:
+                    hide: true
+                  immich_redis:
+                    hide: true
+                  pihole:
+                    name: Pi-hole
+                    icon: si:pihole
+                    url: https://pihole.tailf45616.ts.net/admin/login
+                    description: DNS + adblock
+                  unbound:
+                    name: Unbound
+                    icon: mdi:dns
+                    description: Resolver DNS recursivo
+                  arcane:
+                    name: Arcane
+                    icon: mdi:docker
+                    url: https://arcane.tailf45616.ts.net
+                    description: Gestión de Docker
+                  paperless:
+                    name: Paperless
+                    icon: mdi:file-document-multiple
+                    url: https://paperless-ngx.tailf45616.ts.net
+                    description: Gestión de documentos
+                  jellyfin:
+                    name: Jellyfin
+                    icon: si:jellyfin
+                    url: https://jellyfin.tailf45616.ts.net
+                    description: Servidor multimedia
+                  sonarr:
+                    name: Sonarr
+                    icon: mdi:television
+                    url: https://sonarr.tailf45616.ts.net
+                    description: Gestión de series
+                  radarr:
+                    name: Radarr
+                    icon: mdi:filmstrip
+                    url: https://radarr.tailf45616.ts.net
+                    description: Gestión de películas
+                  prowlarr:
+                    name: Prowlarr
+                    icon: mdi:magnify
+                    url: https://prowlarr.tailf45616.ts.net
+                    description: Indexador
+                  qbittorrent:
+                    name: qBittorrent
+                    icon: mdi:download
+                    url: https://qbittorrent.tailf45616.ts.net
+                    description: Descargas torrent
+                  bazarr:
+                    name: Bazarr
+                    icon: mdi:subtitles
+                    url: https://bazarr.tailf45616.ts.net
+                    description: Gestión de subtítulos
+                  omniroute:
+                    name: Omniroute
+                    icon: mdi:router-network
+                    url: https://omniroute.tailf45616.ts.net
+                    description: Ruter de IA
+                  omniroute-redis:
+                    hide: true
+                  nginx:
+                    name: Nginx
+                    icon: si:nginx
+                    url: https://nginx.tailf45616.ts.net
+                    description: proxy inverso
+                  musikat:
+                    name: Musikat
+                    icon: mdi:music-box-multiple
+                    url: https://musikat.tailf45616.ts.net
+                    description: Descargas de música
+                  uptime-kuma:
+                    name: Uptime Kuma
+                    icon: si:uptimekuma
+                    url: https://uptime.tailf45616.ts.net
+                    description: Monitoreo de servicios
+
+          - type: dns-stats
+            title: Pi-hole
+            service: pihole-v6
+            url: https://pihole.tailf45616.ts.net
+            password: REDACTED
+            hide-top-domains: false
+
+      # ---------------- COLUMNA DERECHA (small) ----------------
+      - size: small
+        widgets:
+          - type: bookmarks
+            groups:
+              - title: Gestión
+                color: 45 60 55
+                links:
+                  - title: Arcane
+                    url: https://arcane.tailf45616.ts.net
+                    icon: mdi:docker
+                  - title: Speedtest
+                    url: https://speedtest.tailf45616.ts.net
+                    icon: si:speedtest
+                  - title: Paperless
+                    url: https://paperless-ngx.tailf45616.ts.net
+                    icon: mdi:file-document-multiple
+
+              - title: Seguridad y Red
+                color: 355 60 55
+                links:
+                  - title: Vaultwarden
+                    url: https://vaultwarden.tailf45616.ts.net
+                    icon: si:vaultwarden
+                  - title: Pi-hole
+                    url: https://pihole.tailf45616.ts.net/admin/
+                    icon: si:pihole
+                  - title: Tailscale Admin
+                    url: https://login.tailscale.com/admin/machines
+                    icon: si:tailscale
+                  - title: Uptime Kuma
+                    url: https://uptime.tailf45616.ts.net
+                    icon: si:uptimekuma
+
+              - title: Multimedia
+                color: 210 60 55
+                links:
+                  - title: Jellyfin
+                    url: https://jellyfin.tailf45616.ts.net
+                    icon: si:jellyfin
+                  - title: Immich
+                    url: https://immich.tailf45616.ts.net
+                    icon: si:immich
+                  - title: Navidrome
+                    url: https://navidrome.tailf45616.ts.net
+                    icon: mdi:music-note
+                  - title: Nextcloud
+                    url: https://nextcloud.tailf45616.ts.net
+                    icon: si:nextcloud
+                  - title: Omniroute
+                    url: https://omniroute.tailf45616.ts.net
+                    icon: mdi:router-network
+                  - title: Musikat
+                    url: https://musikat.tailf45616.ts.net
+                    icon: mdi:music-box-multiple
+
+              - title: ARR Stack
+                color: 270 60 55
+                links:
+                  - title: Sonarr
+                    url: https://sonarr.tailf45616.ts.net
+                    icon: mdi:television
+                  - title: Radarr
+                    url: https://radarr.tailf45616.ts.net
+                    icon: mdi:filmstrip
+                  - title: Prowlarr
+                    url: https://prowlarr.tailf45616.ts.net
+                    icon: mdi:magnify
+                  - title: qBittorrent
+                    url: https://qbittorrent.tailf45616.ts.net
+                    icon: mdi:download
+                  - title: Bazarr
+                    url: https://bazarr.tailf45616.ts.net
+                    icon: mdi:subtitles
+                  - title: Lidarr
+                    url: https://lidarr.tailf45616.ts.net
+                    icon: mdi:music-note-plus
+                  - title: Readarr
+                    url: https://readarr.tailf45616.ts.net
+                    icon: mdi:book-open-page-variant
