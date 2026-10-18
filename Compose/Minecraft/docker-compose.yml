@@ -1,0 +1,28 @@
+name: minecraft
+
+services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft
+    pull_policy: daily
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    ports:
+      - "${MINECRAFT_PORT}:25565"
+    environment:
+      - TZ=${TZ}
+      - EULA=TRUE
+    volumes:
+      - ${SERVICE_CONFIG}:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 8G
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
