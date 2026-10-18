@@ -9,11 +9,6 @@ Lista de proyectos técnicos para enriquecer conocimientos en administración de
   - Crear un playbook de Ansible que automatice la configuración inicial de `pilla`.
   - Debe automatizar: instalación de Docker, configuración del montaje de `/mnt/nasdisk`, creación de usuarios (`villacus`) y despliegue del agente de Komodo.
   - *Objetivo:* Poder replicar todo tu entorno en otra Pi (o si se corrompe la tarjeta SD) en un solo comando.
-
-- [ ] **Copias de Seguridad Automatizadas (3-2-1):**
-  - Implementar un sistema de backups automáticos para los directorios `config/` y las bases de datos de los stacks (`nextcloud_db`, `immich_postgres`) usando herramientas como **Restic** o **BorgBackup**.
-  - *Objetivo:* Encriptar los datos, deduplicar y subirlos automáticamente a un almacenamiento externo (ej. una cuenta de la universidad o nube barata) mediante un cron job o script en Bash.
-
 ---
 
 ## 📊 2. Observabilidad y Monitorización Avanzada
@@ -57,3 +52,9 @@ Lista de proyectos técnicos para enriquecer conocimientos en administración de
 - [ ] **Servidor de CI/CD (Woodpecker CI o Gitea Actions):**
   - Conectar un corredor (*runner*) de integración continua a tu Git local.
   - *Objetivo:* Que al hacer un `git push` de tus Docker Compose, el propio sistema pase un linter al código yaml, verifique la sintaxis y avise a Komodo para actualizar el despliegue automáticamente.
+## 5. Oracle
+- [ ] Uptime kuma en oracle con aviso en discord
+- [ ] Servidor minecraft
+- [ ] pihole en oracle para fallback
+- [ ] exit node de tailnet
+- [ ] 
