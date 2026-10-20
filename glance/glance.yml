@@ -37,25 +37,24 @@ pages:
             cache: 10s
             url: http://172.17.0.1:8083/
             template: |
-              {{ if .JSON.Exists "battery.charge" }}
+              {{ if .JSON.Exists "battery_charge" }}
               <div class="flex justify-between text-center">
                 <div>
-                  <div class="color-highlight size-h3">{{ .JSON.Int "battery.charge" }}%</div>
+                  <div class="color-highlight size-h3">{{ .JSON.Int "battery_charge" }}%</div>
                   <div class="size-h6">BATERÍA</div>
                 </div>
                 <div>
-                  <div class="color-highlight size-h3">{{ .JSON.Int "ups.load" }}%</div>
+                  <div class="color-highlight size-h3">{{ .JSON.Int "ups_load" }}%</div>
                   <div class="size-h6">CARGA</div>
                 </div>
                 <div>
-                  <div class="color-positive size-h3">OK</div>
+                  <div class="color-positive size-h3">{{ .JSON.String "ups_status" }}</div>
                   <div class="size-h6">ESTADO</div>
                 </div>
               </div>
               {{ else }}
               <p class="size-h4 color-negative">UPS no disponible</p>
               {{ end }}
-
       # ---------------- COLUMNA CENTRAL (full) ----------------
       - size: full
         widgets:
