@@ -77,7 +77,7 @@ services:
       - music-network
 
   cron:
-    image: nextcloud:33.0.5-apache
+    image: nextcloud:33.0.10-apache
     container_name: nextcloud_cron
     deploy:
       resources:
