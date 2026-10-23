@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: nextcloud:33.0.5-apache
+    image: nextcloud:33.0.10-apache
     container_name: nextcloud_app
     deploy:
       resources:
