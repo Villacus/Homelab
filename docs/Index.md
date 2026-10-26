@@ -13,6 +13,7 @@ explica esta obligación y el flujo para mantenerla.
 - [[Servicios]] — Catálogo de aplicaciones, asignación de puertos y límites de recursos.
 - [[00 - ServidorPi]] — Especificaciones técnicas del hardware y conectividad del host.
 - [[Despliegue]] — Flujo de trabajo paso a paso para desplegar y actualizar servicios.
+- [[NginxOracle]] — Reverse proxy público en Oracle con destinos hacia `pilla`.
 - [[Musikat]] — Despliegue y mantenimiento del servicio musical.
 - [[Glance]] — Configuración externa y actualización del dashboard.
 - [[NebulaSync]] — Sincronización automática de bóvedas.

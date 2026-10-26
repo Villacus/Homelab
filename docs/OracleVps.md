@@ -50,6 +50,7 @@ La publicación Docker no equivale a una política de firewall. En Oracle y en e
 - Cerrar `53/tcp` y `53/udp` hacia Internet. Un Pi-hole abierto puede convertirse en un resolver abusado para amplificación DNS.
 - Cerrar `3001`, `8888` y `9001` hacia Internet. Acceder a monitorización y administración mediante Tailscale o un reverse proxy autenticado.
 - Publicar `80/443` solo para el servicio web que se haya elegido explícitamente. No usar esos puertos para exponer paneles de administración.
+- El reverse proxy público de Nginx Proxy Manager está documentado en [[NginxOracle]]; Pi-hole conserva `network_mode: host`, pero Nginx usa bridge y no debe reclamar ese modo.
 
 No activar el exit node de Tailscale para más usuarios hasta definir ACLs y confirmar que se desea convertir la VPS en puerta de salida de la tailnet.
 

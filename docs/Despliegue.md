@@ -28,6 +28,10 @@ PascalCase, ubicación dentro de `docs/`, navegación mediante wikilinks y sin
 secretos ni credenciales reales. Si el cambio afecta al despliegue, actualiza
 también esta guía o enlaza desde ella el procedimiento específico.
 
+## Nginx Proxy Manager en Oracle
+
+Para la migración pública consulta [[NginxOracle]]. En Oracle, Pi-hole usa `network_mode: host`, pero Nginx Proxy Manager usa red bridge y publica `80/443`; no deben compartir `host mode`. El panel de Nginx permanece en `8181` y no se expone a Internet.
+
 ## Red compartida y Nginx Proxy Manager
 
 Navidrome, Musikat y Nginx Proxy Manager comparten la red externa

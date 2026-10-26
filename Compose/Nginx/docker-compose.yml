@@ -15,11 +15,11 @@ services:
       - '${NGINX_HTTP_PORT}:80'
       - '${NGINX_HTTPS_PORT}:443'
       - '${NGINX_ADMIN_PORT}:81'
+    extra_hosts:
+      - host.docker.internal:host-gateway
     volumes:
       - ${NGINX_DATA_PATH}:/data
       - ${NGINX_LETSENCRYPT_PATH}:/etc/letsencrypt
-    networks:
-      - music-network
     stop_grace_period: 30s
     logging:
       driver: json-file
@@ -27,8 +27,3 @@ services:
         max-size: 10m
         max-file: 3
     restart: unless-stopped
-
-networks:
-  music-network:
-    name: ${MUSIC_NETWORK}
-    external: true
