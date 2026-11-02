@@ -52,10 +52,11 @@ services:
       - REDIS_HOST=redis
       - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
       - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
-      - NEXTCLOUD_TRUSTED_DOMAINS=192.168.0.9 nextcloud.tailf45616.ts.net pilla.tailf45616.ts.net
+      - NEXTCLOUD_TRUSTED_DOMAINS=192.168.0.9 nextcloud.tailf45616.ts.net pilla.tailf45616.ts.net oracle.tailf45616.ts.net
       - OVERWRITEPROTOCOL=https
-      - OVERWRITEHOST=nextcloud.tailf45616.ts.net
-      - OVERWRITECLIURL=https://nextcloud.tailf45616.ts.net
+      - OVERWRITEHOST=oracle.tailf45616.ts.net
+      - OVERWRITEWEBROOT=/nextcloud
+      - OVERWRITECLIURL=https://oracle.tailf45616.ts.net/nextcloud
       - PHP_UPLOAD_LIMIT=2G
       - PHP_MEMORY_LIMIT=512M
     volumes:
