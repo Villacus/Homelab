@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oracle Homelab</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { display: grid; min-height: 100vh; place-items: center; margin: 0; background: #101827; color: #f8fafc; }
+    main { width: min(92vw, 760px); text-align: center; }
+    h1 { margin-bottom: .5rem; }
+    p { color: #94a3b8; }
+    nav { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 2rem; }
+    a { display: block; padding: 1.25rem; border: 1px solid #334155; border-radius: .75rem; color: #f8fafc; text-decoration: none; background: #1e293b; }
+    a:hover, a:focus-visible { border-color: #38bdf8; background: #26364d; }
+    strong { display: block; font-size: 1.1rem; }
+    small { display: block; margin-top: .4rem; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Oracle Homelab</h1>
+    <p>Selecciona un servicio</p>
+    <nav aria-label="Servicios">
+      <a href="/navidrome/"><strong>Navidrome</strong><small>Música</small></a>
+      <a href="/nextcloud/"><strong>Nextcloud</strong><small>Archivos y nube personal</small></a>
+    </nav>
+  </main>
+</body>
+</html>
