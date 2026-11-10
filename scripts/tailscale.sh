@@ -16,5 +16,4 @@ tailscale serve --bg --https 443 --service=svc:arcane 127.0.0.1:3552
 tailscale serve --bg --https 443 --service=svc:omniroute 127.0.0.1:20128
 tailscale serve --bg --https 443 --service=svc:musikat 127.0.0.1:8010
 #tailscale funnel --bg --https 443 127.0.0.1:4533
-tailscale serve --bg --https 443 --service=svc:nginx 127.0.0.1:8181
-#tailscale serve --bg --https 443 --service=svc:obsidian 127.0.0.1:3004
+#tailscale serve --bg --https 443 --service=svc:nginx 127.0.0.1:8181
