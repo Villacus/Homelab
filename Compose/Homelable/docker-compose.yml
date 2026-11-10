@@ -1,0 +1,21 @@
+name: homelable
+
+services:
+  homelable:
+    image: ghcr.io/pouzor/homelable:latest
+    container_name: homelable
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${HOMELABLE_CONFIG_PATH}:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - ${HOMELABLE_PORT}:3000

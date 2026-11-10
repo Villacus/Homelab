@@ -17,6 +17,7 @@ explica esta obligación y el flujo para mantenerla.
 - [[Musikat]] — Despliegue y mantenimiento del servicio musical.
 - [[Glance]] — Configuración externa y actualización del dashboard.
 - [[NebulaSync]] — Sincronización automática de bóvedas.
+- [[Homelable]] — Gestión y despliegue con Homelable.
 - [[Respaldo]]
 
 ## Notas y Planificación

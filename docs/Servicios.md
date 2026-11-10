@@ -8,7 +8,7 @@ Para obtener información detallada sobre cómo se configuran estos servicios, c
 | Puerto | Servicio                    | Documentación                                            |
 | ------ | --------------------------- | -------------------------------------------------------- |
 | 80     | Pi-hole                     | [Docs](https://docs.pi-hole.net/)                        |
-| 3000   | Homepage                    | [Docs](https://gethomepage.dev/)                         |
+| 3000   | Homepage / Homelable        | [Docs](https://gethomepage.dev/)                         |
 | 3001   | Uptime Kuma                 | [Docs](https://github.com/louislam/uptime-kuma)          |
 | 3002   | Speedtest                   | [Docs](https://github.com/librespeed/speedtest)          |
 | 4533   | Navidrome                   | [Docs](https://www.navidrome.org/)                       |
